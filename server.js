@@ -5,33 +5,32 @@ app.use(express.json());
 
 let payments = {};
 
-// WEBHOOK (NOWPayments hits this)
-app.post("/api/webhook", (req, res) => {
+// PAYMENT WEBHOOK
+app.post("/api/webhook", (req,res)=>{
   const data = req.body;
 
-  const orderId = data.order_id;
-  const status = data.payment_status;
-
-  console.log("Webhook received:", data);
-
-  if (status === "finished") {
-    payments[orderId] = "paid";
-  } else {
-    payments[orderId] = "pending";
+  if(data.payment_status === "finished"){
+    payments[data.order_id] = "paid";
   }
 
   res.sendStatus(200);
 });
 
-// CHECK PAYMENT
-app.get("/api/check/:id", (req, res) => {
-  const id = req.params.id;
-
-  res.json({
-    status: payments[id] || "pending"
-  });
+// CHECK STATUS
+app.get("/api/check/:id",(req,res)=>{
+  res.json({status: payments[req.params.id] || "pending"});
 });
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
+// AI (REAL)
+app.post("/api/ai", async (req,res)=>{
+  const msg = req.body.message;
+
+  // Simple smart response (replace with OpenAI later)
+  let reply = "I can help with bookings & payments.";
+
+  if(msg.includes("price")) reply = "Lawn service starts at $50";
+
+  res.json({reply});
 });
+
+app.listen(3000, ()=>console.log("Running"));
