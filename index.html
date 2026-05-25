@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precision Cutz Payments</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: white;
+  text-align: center;
+}
+
+/* Header */
+.header {
+  padding: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #00d632;
+}
+
+.header p {
+  color: #aaa;
+}
+
+/* QR */
+.qr-container img {
+  width: 260px;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 20px rgba(0,255,100,0.3);
+}
+
+/* Amount */
+.amount-box input {
+  width: 80%;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Buttons */
+button {
+  display: block;
+  width: 85%;
+  margin: 10px auto;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: #00d632;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Status */
+.status {
+  margin-top: 20px;
+  color: #00d632;
+}
+
+/* AI Chat */
+#ai-box {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  background: #111;
+  border-radius: 15px;
+  padding: 10px;
+  box-shadow: 0 0 15px rgba(0,255,100,0.3);
+}
+
+#chat {
+  height: 200px;
+  overflow-y: auto;
+  font-size: 14px;
+  text-align: left;
+}
+
+#userInput {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Precision Cutz</h1>
+  <p>Tap • Scan • Pay</p>
+</div>
+
+<div class="qr-container">
+  <!-- YOUR FILE NAME -->
+  <img src="qr.PNG" alt="Scan to Pay">
+  <p>Scan to Pay</p>
+</div>
+
+<div class="amount-box">
+  <input type="number" id="amount" placeholder="$ Enter Amount">
+</div>
+
+<button onclick="pay('BTC')">Pay with Bitcoin</button>
+<button onclick="pay('ETH')">Pay with Ethereum</button>
+<button onclick="pay('XRP')">Pay with XRP</button>
+<button onclick="pay('CashApp')">Pay with Cash App</button>
+
+<div class="status" id="status">
+  Waiting for payment...
+</div>
+
+<!-- AI CHAT -->
+<div id="ai-box">
+  <div id="chat"></div>
+  <input id="userInput" placeholder="Ask something...">
+  <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+// PAYMENT SYSTEM
+function pay(type) {
+  let amount = document.getElementById("amount").value;
+
+  if (!amount) {
+    alert("Enter amount first");
+    return;
+  }
+
+  document.getElementById("status").innerText =
+    "Processing " + type + " $" + amount + "...";
+
+  // Simulated conversion
+  if (type !== "XRP") {
+    setTimeout(() => {
+      document.getElementById("status").innerText =
+        "Converted to XRP ✔ Payment Complete";
+    }, 2000);
+  } else {
+    setTimeout(() => {
+      document.getElementById("status").innerText =
+        "XRP Payment Received ✔";
+    }, 2000);
+  }
+}
+
+// AI CHAT SYSTEM
+function sendMessage() {
+  let input = document.getElementById("userInput").value;
+  let chat = document.getElementById("chat");
+
+  if (!input) return;
+
+  chat.innerHTML += "<div>👤: " + input + "</div>";
+
+  let reply = aiResponse(input.toLowerCase());
+
+  setTimeout(() => {
+    chat.innerHTML += "<div style='color:#00d632'>🤖: " + reply + "</div>";
+    chat.scrollTop = chat.scrollHeight;
+  }, 500);
+
+  document.getElementById("userInput").value = "";
+}
+
+// AI LOGIC
+function aiResponse(msg) {
+
+  if (msg.includes("price") || msg.includes("cost")) {
+    return "Lawn cuts start at $40 depending on yard size.";
+  }
+
+  if (msg.includes("book") || msg.includes("appointment")) {
+    return "I can book you. What day works best?";
+  }
+
+  if (msg.includes("pay")) {
+    return "Scan the QR or tap a payment button above.";
+  }
+
+  if (msg.includes("location") || msg.includes("address")) {
+    return "Send your address and I’ll confirm service availability.";
+  }
+
+  if (msg.includes("cash app")) {
+    return "Send to $cryptogang85.";
+  }
+
+  return "I got you. Need booking or payment help?";
+}
+</script>
+
+</body>
+</html>
