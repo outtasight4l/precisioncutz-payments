@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precision Cutz Payments</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: white;
+  text-align: center;
+}
+
+.header {
+  padding: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  color: #00d632;
+}
+
+.header p {
+  color: #aaa;
+}
+
+.qr-container img {
+  width: 260px;
+  border-radius: 20px;
+  margin-top: 20px;
+}
+
+.amount-box input {
+  width: 80%;
+  padding: 15px;
+  border-radius: 12px;
+  border: none;
+  font-size: 20px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+button {
+  display: block;
+  width: 85%;
+  margin: 10px auto;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: #00d632;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.status {
+  margin-top: 20px;
+  color: #00d632;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+  <h1>Precision Cutz</h1>
+  <p>Tap • Scan • Pay</p>
+</div>
+
+<div class="qr-container">
+  <!-- USING YOUR EXACT FILE NAME -->
+  <img src="qr.PNG" alt="Scan to Pay">
+  <p>Scan to Pay</p>
+</div>
+
+<div class="amount-box">
+  <input type="number" id="amount" placeholder="$ Enter Amount">
+</div>
+
+<button onclick="pay('BTC')">Bitcoin</button>
+<button onclick="pay('ETH')">Ethereum</button>
+<button onclick="pay('XRP')">XRP</button>
+<button onclick="pay('CashApp')">Cash App</button>
+
+<div class="status" id="status">
+  Waiting for payment...
+</div>
+
+<script>
+function pay(type) {
+  let amount = document.getElementById("amount").value;
+
+  if (!amount) {
+    alert("Enter amount first");
+    return;
+  }
+
+  document.getElementById("status").innerText =
+    "Processing " + type + " $" + amount + "...";
+
+  if (type !== "XRP") {
+    setTimeout(() => {
+      document.getElementById("status").innerText =
+        "Converted to XRP ✔ Payment Complete";
+    }, 2000);
+  } else {
+    setTimeout(() => {
+      document.getElementById("status").innerText =
+        "XRP Payment Received ✔";
+    }, 2000);
+  }
+}
+</script>
+
+</body>
+</html>
