@@ -1,205 +1,231 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Precision Cutz Payments</title>
+<title>Precision Cutz Pay</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #000;
-  color: white;
-  text-align: center;
-}
-
-/* Header */
-.header {
-  padding: 20px;
-}
-
-.header h1 {
-  margin: 0;
-  color: #00d632;
-}
-
-.header p {
-  color: #aaa;
-}
-
-/* QR */
-.qr-container img {
-  width: 260px;
-  border-radius: 20px;
-  margin-top: 20px;
-  box-shadow: 0 0 20px rgba(0,255,100,0.3);
-}
-
-/* Amount */
-.amount-box input {
-  width: 80%;
-  padding: 15px;
-  border-radius: 12px;
-  border: none;
-  font-size: 20px;
-  text-align: center;
-  margin-top: 20px;
-}
-
-/* Buttons */
-button {
-  display: block;
-  width: 85%;
-  margin: 10px auto;
-  padding: 15px;
-  border: none;
-  border-radius: 12px;
-  background: #00d632;
+  font-family: Arial;
+  background: #00C244;
   color: black;
-  font-size: 16px;
-  font-weight: bold;
 }
 
-/* Status */
-.status {
-  margin-top: 20px;
-  color: #00d632;
+/* TOP */
+.top {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
 }
 
-/* AI Chat */
-#ai-box {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 300px;
-  background: #111;
-  border-radius: 15px;
-  padding: 10px;
-  box-shadow: 0 0 15px rgba(0,255,100,0.3);
+/* AMOUNT */
+.amount {
+  text-align: center;
+  font-size: 80px;
+  margin-top: 40px;
 }
 
-#chat {
-  height: 200px;
-  overflow-y: auto;
-  font-size: 14px;
-  text-align: left;
+/* KEYPAD */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 30px;
+  text-align: center;
+  font-size: 28px;
 }
 
-#userInput {
-  width: 100%;
-  padding: 10px;
+.key { padding: 15px; }
+
+/* BUTTONS */
+.actions {
+  display: flex;
+  gap: 10px;
+  padding: 0 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 15px;
+  border-radius: 25px;
   border: none;
+}
+
+.pay {
+  margin: 20px;
+  background: black;
+  color: white;
+  padding: 18px;
+  border-radius: 30px;
+  text-align: center;
+}
+
+/* QR MODAL */
+.qr-modal {
+  position: fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background: black;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+}
+
+.qr-modal img {
+  width: 250px;
+}
+
+/* AI */
+.ai-btn {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  background: black;
+  color: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+}
+
+.ai-box {
+  position: fixed;
+  bottom: 160px;
+  right: 20px;
+  width: 260px;
+  background: white;
+  padding: 10px;
   border-radius: 10px;
-  margin-top: 5px;
+  display:none;
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="header">
-  <h1>Precision Cutz</h1>
-  <p>Tap • Scan • Pay</p>
+<div class="top">
+  <div onclick="openQR()">📷</div>
+  <div>😊</div>
 </div>
 
-<div class="qr-container">
-  <!-- YOUR FILE NAME -->
-  <img src="qr.PNG" alt="Scan to Pay">
-  <p>Scan to Pay</p>
+<div class="amount" id="amount">$0</div>
+
+<div class="keypad">
+  <div onclick="press(1)">1</div>
+  <div onclick="press(2)">2</div>
+  <div onclick="press(3)">3</div>
+  <div onclick="press(4)">4</div>
+  <div onclick="press(5)">5</div>
+  <div onclick="press(6)">6</div>
+  <div onclick="press(7)">7</div>
+  <div onclick="press(8)">8</div>
+  <div onclick="press(9)">9</div>
+  <div onclick="press('.')">.</div>
+  <div onclick="press(0)">0</div>
+  <div onclick="back()">⌫</div>
 </div>
 
-<div class="amount-box">
-  <input type="number" id="amount" placeholder="$ Enter Amount">
+<div class="actions">
+  <button class="btn">Pool</button>
+  <button class="btn">Request</button>
 </div>
 
-<button onclick="pay('BTC')">Pay with Bitcoin</button>
-<button onclick="pay('ETH')">Pay with Ethereum</button>
-<button onclick="pay('XRP')">Pay with XRP</button>
-<button onclick="pay('CashApp')">Pay with Cash App</button>
+<div class="pay" onclick="startPayment()">Pay</div>
 
-<div class="status" id="status">
-  Waiting for payment...
+<!-- QR SCREEN -->
+<div class="qr-modal" id="qrModal">
+  <h2 style="color:white;">Scan to Pay</h2>
+  <img src="qr.PNG">
+  <p id="status" style="color:white;">Waiting for payment...</p>
+  <button onclick="closeQR()">Close</button>
 </div>
 
-<!-- AI CHAT -->
-<div id="ai-box">
-  <div id="chat"></div>
-  <input id="userInput" placeholder="Ask something...">
-  <button onclick="sendMessage()">Send</button>
+<!-- AI -->
+<button class="ai-btn" onclick="toggleAI()">AI</button>
+
+<div class="ai-box" id="aiBox">
+  <textarea id="aiInput"></textarea>
+  <button onclick="askAI()">Send</button>
+  <button onclick="voice()">🎤</button>
+  <p id="aiResponse"></p>
 </div>
 
 <script>
-// PAYMENT SYSTEM
-function pay(type) {
-  let amount = document.getElementById("amount").value;
+let val = "";
 
-  if (!amount) {
-    alert("Enter amount first");
-    return;
-  }
+// INPUT
+function press(n) {
+  val += n;
+  document.getElementById("amount").innerText = "$" + val;
+}
 
-  document.getElementById("status").innerText =
-    "Processing " + type + " $" + amount + "...";
+function back() {
+  val = val.slice(0,-1);
+  document.getElementById("amount").innerText = "$" + (val || 0);
+}
 
-  // Simulated conversion
-  if (type !== "XRP") {
-    setTimeout(() => {
-      document.getElementById("status").innerText =
-        "Converted to XRP ✔ Payment Complete";
-    }, 2000);
-  } else {
-    setTimeout(() => {
-      document.getElementById("status").innerText =
-        "XRP Payment Received ✔";
-    }, 2000);
+// PAYMENT
+let orderId;
+
+function startPayment() {
+  orderId = "order_" + Date.now();
+  openQR();
+  checkLoop();
+}
+
+// QR
+function openQR() {
+  document.getElementById("qrModal").style.display = "flex";
+}
+
+function closeQR() {
+  document.getElementById("qrModal").style.display = "none";
+}
+
+// CHECK PAYMENT
+async function checkPayment() {
+  const res = await fetch("https://YOUR-BACKEND.onrender.com/api/check/" + orderId);
+  const data = await res.json();
+
+  if(data.status === "paid"){
+    document.getElementById("status").innerText = "✅ Payment Complete";
   }
 }
 
-// AI CHAT SYSTEM
-function sendMessage() {
-  let input = document.getElementById("userInput").value;
-  let chat = document.getElementById("chat");
-
-  if (!input) return;
-
-  chat.innerHTML += "<div>👤: " + input + "</div>";
-
-  let reply = aiResponse(input.toLowerCase());
-
-  setTimeout(() => {
-    chat.innerHTML += "<div style='color:#00d632'>🤖: " + reply + "</div>";
-    chat.scrollTop = chat.scrollHeight;
-  }, 500);
-
-  document.getElementById("userInput").value = "";
+function checkLoop(){
+  setInterval(checkPayment, 5000);
 }
 
-// AI LOGIC
-function aiResponse(msg) {
+// AI
+function toggleAI(){
+  const box = document.getElementById("aiBox");
+  box.style.display = box.style.display === "block" ? "none" : "block";
+}
 
-  if (msg.includes("price") || msg.includes("cost")) {
-    return "Lawn cuts start at $40 depending on yard size.";
-  }
+// REAL AI (needs backend)
+async function askAI(){
+  const input = document.getElementById("aiInput").value;
 
-  if (msg.includes("book") || msg.includes("appointment")) {
-    return "I can book you. What day works best?";
-  }
+  const res = await fetch("https://YOUR-BACKEND.onrender.com/api/ai",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({message:input})
+  });
 
-  if (msg.includes("pay")) {
-    return "Scan the QR or tap a payment button above.";
-  }
+  const data = await res.json();
+  document.getElementById("aiResponse").innerText = data.reply;
+}
 
-  if (msg.includes("location") || msg.includes("address")) {
-    return "Send your address and I’ll confirm service availability.";
-  }
-
-  if (msg.includes("cash app")) {
-    return "Send to $cryptogang85.";
-  }
-
-  return "I got you. Need booking or payment help?";
+// VOICE
+function voice(){
+  const rec = new webkitSpeechRecognition();
+  rec.start();
+  rec.onresult = e => {
+    document.getElementById("aiInput").value = e.results[0][0].transcript;
+  };
 }
 </script>
 
