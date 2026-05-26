@@ -23,12 +23,6 @@ function updateDisplay() {
     maximumFractionDigits: 2
   });
 
-  // animation pop
-  display.style.transform = "translate(-50%, -50%) scale(1.1)";
-  setTimeout(() => {
-    display.style.transform = "translate(-50%, -50%) scale(1)";
-  }, 100);
-
   display.innerText = "$" + formatted;
 }
 
@@ -46,11 +40,11 @@ function resetAmount() {
   updateDisplay();
 }
 
-/* TOP ICONS */
+/* ICONS */
 function openQR() {
-  alert("QR Scanner coming next");
+  alert("QR coming next");
 }
 
 function openAI() {
-  alert("AI Assistant coming next");
+  alert("AI coming next");
 }
