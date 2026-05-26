@@ -1,26 +1,26 @@
 body {
   margin: 0;
-  background: radial-gradient(circle at center, #001a0d 0%, #000000 100%);
-  font-family: Arial, sans-serif;
-  color: #00ff66;
+  background: radial-gradient(circle at center, #001a0d, #000000);
+  font-family: Arial;
   text-align: center;
+  color: #00ff66;
 }
 
 /* LOGO */
 .logo {
   width: 90%;
   max-width: 400px;
-  margin-top: 30px;
+  margin-top: 20px;
   filter:
     drop-shadow(0 0 10px #00ff66)
-    drop-shadow(0 0 30px #00ff66);
+    drop-shadow(0 0 30px #00ff66)
+    drop-shadow(0 0 60px #00ff66);
 }
 
 /* AMOUNT */
 .amount {
   font-size: 90px;
   margin: 20px 0;
-  color: #00ff66;
   text-shadow:
     0 0 10px #00ff66,
     0 0 30px #00ff66,
@@ -28,15 +28,22 @@ body {
 }
 
 /* BUTTONS */
+.button-row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
 .btn {
   border: 2px solid #00ff66;
   background: transparent;
   color: #00ff66;
   padding: 15px 40px;
-  margin: 10px;
   border-radius: 20px;
   font-size: 20px;
-  box-shadow: 0 0 20px #00ff66;
+  box-shadow:
+    0 0 10px #00ff66,
+    0 0 20px #00ff66;
 }
 
 /* KEYPAD */
@@ -44,16 +51,28 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
-  padding: 30px;
+  padding: 20px;
 }
 
 /* 3D NUMBERS */
 .key {
   font-size: 45px;
+  font-weight: bold;
   color: #00ff66;
   text-shadow:
     0 0 10px #00ff66,
     0 0 25px #00ff66,
     0 6px 0 #003311,
-    0 10px 15px rgba(0,0,0,0.8);
+    0 10px 20px rgba(0,0,0,0.8);
+}
+
+.key:active {
+  transform: scale(0.9);
+}
+
+.delete {
+  border: 2px solid #00ff66;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 15px #00ff66;
 }
