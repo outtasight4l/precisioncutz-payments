@@ -3,44 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Precision Cutz Payments</title>
-
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="ui">
+<div class="app">
 
-  <!-- BACKGROUND UI -->
-  <img src="ui.png" class="ui-bg">
+  <!-- UI IMAGE -->
+  <img src="ui.PNG" class="ui">
 
-  <!-- LIVE AMOUNT -->
-  <div id="amount" class="amount">$0.00</div>
+  <!-- CLICK ZONES -->
+  <div class="tap" onclick="press('1')" style="top:55%; left:20%;"></div>
+  <div class="tap" onclick="press('2')" style="top:55%; left:50%;"></div>
+  <div class="tap" onclick="press('3')" style="top:55%; left:80%;"></div>
 
-  <!-- REQUEST -->
-  <div class="btn request" onclick="requestMoney()"></div>
+  <div class="tap" onclick="press('4')" style="top:65%; left:20%;"></div>
+  <div class="tap" onclick="press('5')" style="top:65%; left:50%;"></div>
+  <div class="tap" onclick="press('6')" style="top:65%; left:80%;"></div>
 
-  <!-- PAY -->
-  <div class="btn pay" onclick="payMoney()"></div>
+  <div class="tap" onclick="press('7')" style="top:75%; left:20%;"></div>
+  <div class="tap" onclick="press('8')" style="top:75%; left:50%;"></div>
+  <div class="tap" onclick="press('9')" style="top:75%; left:80%;"></div>
 
-  <!-- KEYPAD -->
-  <div class="btn k1" onclick="press('1')"></div>
-  <div class="btn k2" onclick="press('2')"></div>
-  <div class="btn k3" onclick="press('3')"></div>
+  <div class="tap" onclick="press('.')" style="top:85%; left:20%;"></div>
+  <div class="tap" onclick="press('0')" style="top:85%; left:50%;"></div>
+  <div class="tap" onclick="del()" style="top:85%; left:80%;"></div>
 
-  <div class="btn k4" onclick="press('4')"></div>
-  <div class="btn k5" onclick="press('5')"></div>
-  <div class="btn k6" onclick="press('6')"></div>
-
-  <div class="btn k7" onclick="press('7')"></div>
-  <div class="btn k8" onclick="press('8')"></div>
-  <div class="btn k9" onclick="press('9')"></div>
-
-  <div class="btn kdot" onclick="press('.')"></div>
-  <div class="btn k0" onclick="press('0')"></div>
-  <div class="btn kdel" onclick="del()"></div>
+  <!-- REQUEST / PAY -->
+  <div class="tap wide" onclick="requestMoney()" style="top:45%; left:30%;"></div>
+  <div class="tap wide" onclick="payMoney()" style="top:45%; left:70%;"></div>
 
 </div>
 
