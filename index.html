@@ -16,29 +16,66 @@ body {
   text-align: center;
 }
 
-/* LOGO */
-.logo {
-  width: 90%;
-  max-width: 420px;
-  margin-top: 20px;
-  filter:
-    drop-shadow(0 0 10px #00ff66)
-    drop-shadow(0 0 30px #00ff66)
-    drop-shadow(0 0 60px #00ff66);
+/* TOP UI CONTAINER */
+.top-ui {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
 }
 
-/* AMOUNT (3D STYLE) */
+/* LOGO BUTTON */
+.logo-btn {
+  width: 65%;
+  max-width: 320px;
+  cursor: pointer;
+  transition: 0.2s;
+
+  filter:
+    drop-shadow(0 0 15px #00ff66)
+    drop-shadow(0 0 40px #00ff66)
+    drop-shadow(0 0 80px #00ff66);
+}
+
+.logo-btn:active {
+  transform: scale(0.95);
+}
+
+/* SIDE BUTTONS */
+.circle-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00ff66;
+  font-size: 22px;
+  cursor: pointer;
+
+  border: 2px solid #00ff66;
+
+  box-shadow:
+    0 0 10px #00ff66,
+    0 0 25px #00ff66;
+
+  transition: 0.2s;
+}
+
+.circle-btn:active {
+  transform: scale(0.9);
+}
+
+/* AMOUNT */
 .amount {
   font-size: 90px;
-  margin: 20px 0;
+  margin: 10px 0 20px;
   font-weight: bold;
-  color: #00ff66;
+
   text-shadow:
-    0 0 10px #00ff66,
-    0 0 30px #00ff66,
-    0 0 60px #00ff66,
-    0 6px 0 #003311,
-    0 12px 20px rgba(0,0,0,0.8);
+    0 0 15px #00ff66,
+    0 0 40px #00ff66,
+    0 0 80px #00ff66;
 }
 
 /* BUTTON ROW */
@@ -54,29 +91,27 @@ body {
   border: 2px solid #00ff66;
   background: transparent;
   color: #00ff66;
-  padding: 15px 40px;
+  padding: 15px 35px;
   border-radius: 20px;
   font-size: 18px;
   cursor: pointer;
+
   box-shadow:
     0 0 10px #00ff66,
-    0 0 20px #00ff66;
-  transition: 0.2s;
-}
+    0 0 25px #00ff66;
 
-.btn:hover {
-  background: rgba(0,255,100,0.1);
+  transition: 0.2s;
 }
 
 .btn:active {
   transform: scale(0.95);
 }
 
-/* KEYPAD GRID */
+/* KEYPAD */
 .keypad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
+  gap: 30px;
   padding: 20px;
 }
 
@@ -84,17 +119,17 @@ body {
 .key {
   font-size: 45px;
   font-weight: bold;
-  color: #00ff66;
   cursor: pointer;
-  user-select: none;
+
+  color: #00ff66;
 
   text-shadow:
-    0 0 10px #00ff66,
-    0 0 25px #00ff66,
+    0 0 15px #00ff66,
+    0 0 40px #00ff66,
     0 6px 0 #003311,
-    0 10px 20px rgba(0,0,0,0.8);
+    0 12px 25px rgba(0,0,0,0.9);
 
-  transition: 0.1s;
+  transition: 0.15s;
 }
 
 .key:active {
@@ -104,9 +139,12 @@ body {
 /* DELETE BUTTON */
 .delete {
   border: 2px solid #00ff66;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px;
-  box-shadow: 0 0 15px #00ff66;
+
+  box-shadow:
+    0 0 10px #00ff66,
+    0 0 25px #00ff66;
 }
 
 </style>
@@ -114,16 +152,24 @@ body {
 
 <body>
 
-<!-- LOGO -->
-<img src="logo.PNG" class="logo">
+<!-- TOP UI -->
+<div class="top-ui">
+
+  <div class="circle-btn" onclick="alert('QR')">⌁</div>
+
+  <img src="logo.PNG" class="logo-btn" onclick="alert('Home')">
+
+  <div class="circle-btn" onclick="alert('AI')">🤖</div>
+
+</div>
 
 <!-- AMOUNT -->
-<div class="amount" id="amount">$0.00</div>
+<div class="amount" id="amount">$0</div>
 
 <!-- BUTTONS -->
 <div class="button-row">
-  <button class="btn" onclick="requestPayment()">Request</button>
-  <button class="btn" onclick="payNow()">Pay</button>
+  <button class="btn" onclick="request()">Request</button>
+  <button class="btn" onclick="pay()">Pay</button>
 </div>
 
 <!-- KEYPAD -->
@@ -166,27 +212,17 @@ function del() {
 
 /* UPDATE DISPLAY */
 function update() {
-  let display = amount || "0";
-
-  // format to 2 decimal places
-  if (display.includes(".")) {
-    let parts = display.split(".");
-    if (parts[1].length > 2) {
-      parts[1] = parts[1].slice(0, 2);
-    }
-    display = parts.join(".");
-  }
-
-  document.getElementById("amount").innerText = "$" + display;
+  document.getElementById("amount").innerText =
+    "$" + (amount || "0");
 }
 
-/* BUTTON ACTIONS */
-function requestPayment() {
-  alert("Requesting $" + (amount || "0.00"));
+/* ACTION BUTTONS */
+function request() {
+  alert("Requesting $" + (amount || "0"));
 }
 
-function payNow() {
-  alert("Paying $" + (amount || "0.00"));
+function pay() {
+  alert("Paying $" + (amount || "0"));
 }
 
 </script>
