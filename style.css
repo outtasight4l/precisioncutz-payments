@@ -1,85 +1,37 @@
 body {
   margin: 0;
   background: black;
-  font-family: Arial;
+  display: flex;
+  justify-content: center;
 }
 
-/* CONTAINER */
-.ui {
+.app {
   position: relative;
+  width: 100%;
   max-width: 420px;
-  margin: auto;
 }
 
-/* BACKGROUND IMAGE */
-.ui-bg {
+.ui {
   width: 100%;
   display: block;
 }
 
-/* AMOUNT */
-.amount {
+/* INVISIBLE BUTTONS */
+.tap {
   position: absolute;
-  top: 34%;
-  width: 100%;
-  text-align: center;
-
-  font-size: 70px;
-  font-weight: bold;
-  color: #00ff66;
-
-  text-shadow:
-    0 0 10px #00ff66,
-    0 0 30px #00ff66,
-    0 0 60px #00ff66;
-
-  transition: transform 0.1s;
+  width: 70px;
+  height: 70px;
+  transform: translate(-50%, -50%);
 }
 
-/* BUTTON BASE */
-.btn {
-  position: absolute;
-  cursor: pointer;
-  transition: all 0.1s ease;
+.tap.wide {
+  width: 140px;
+  height: 60px;
 }
 
-/* PRESS EFFECT */
-.btn:active {
-  transform: scale(0.9);
-  background: rgba(0,255,100,0.15);
-  border-radius: 20px;
+/* DEBUG MODE (TURN ON IF NEEDED) */
+/*
+.tap {
+  background: rgba(255,0,0,0.2);
 }
-
-/* ===== BUTTON POSITIONS ===== */
-
-/* ACTIONS */
-.request {
-  top: 46%;
-  left: 7%;
-  width: 38%;
-  height: 8%;
-}
-
-.pay {
-  top: 46%;
-  right: 7%;
-  width: 38%;
-  height: 8%;
-}
-
-/* KEYPAD */
-.k1 { top:60%; left:10%; width:20%; height:7%;}
-.k2 { top:60%; left:40%; width:20%; height:7%;}
-.k3 { top:60%; left:70%; width:20%; height:7%;}
-
-.k4 { top:68%; left:10%; width:20%; height:7%;}
-.k5 { top:68%; left:40%; width:20%; height:7%;}
-.k6 { top:68%; left:70%; width:20%; height:7%;}
-
-.k7 { top:76%; left:10%; width:20%; height:7%;}
-.k8 { top:76%; left:40%; width:20%; height:7%;}
-.k9 { top:76%; left:70%; width:20%; height:7%;}
-
-.kdot { top:84%; left:10%; width:20%; height:7%;}
-.k0   { top:84%; left:40%; width:20%; height:7%;}
-.kdel { top:84%; left:70%; width:20%; height:7%;}
+*/
