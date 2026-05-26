@@ -14,71 +14,110 @@ body {
   background: radial-gradient(circle at center, #001a0d 0%, #000000 100%);
   color: #00ff66;
   text-align: center;
+  overflow-x: hidden;
 }
 
-/* TOP UI CONTAINER */
+/* PARTICLE EFFECT */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png');
+  opacity: 0.2;
+  animation: moveBg 20s linear infinite;
+}
+
+@keyframes moveBg {
+  from { transform: translateY(0); }
+  to { transform: translateY(200px); }
+}
+
+/* TOP UI */
 .top-ui {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 15px 20px;
 }
 
-/* LOGO BUTTON */
-.logo-btn {
-  width: 65%;
-  max-width: 320px;
-  cursor: pointer;
-  transition: 0.2s;
-
-  filter:
-    drop-shadow(0 0 15px #00ff66)
-    drop-shadow(0 0 40px #00ff66)
-    drop-shadow(0 0 80px #00ff66);
-}
-
-.logo-btn:active {
-  transform: scale(0.95);
-}
-
-/* SIDE BUTTONS */
+/* SIDE ICON BUTTONS */
 .circle-btn {
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  border: 2px solid #00ff66;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #00ff66;
-  font-size: 22px;
   cursor: pointer;
-
-  border: 2px solid #00ff66;
 
   box-shadow:
     0 0 10px #00ff66,
-    0 0 25px #00ff66;
+    0 0 30px #00ff66;
 
   transition: 0.2s;
+}
+
+.circle-btn svg {
+  width: 28px;
+  fill: #00ff66;
 }
 
 .circle-btn:active {
   transform: scale(0.9);
 }
 
-/* AMOUNT */
-.amount {
-  font-size: 90px;
-  margin: 10px 0 20px;
-  font-weight: bold;
+/* LOGO */
+.logo-btn {
+  width: 65%;
+  max-width: 320px;
 
-  text-shadow:
-    0 0 15px #00ff66,
-    0 0 40px #00ff66,
-    0 0 80px #00ff66;
+  filter:
+    drop-shadow(0 0 20px #00ff66)
+    drop-shadow(0 0 50px #00ff66)
+    drop-shadow(0 0 100px #00ff66);
+
+  animation: pulse 2.5s infinite alternate;
 }
 
-/* BUTTON ROW */
+@keyframes pulse {
+  from { filter: drop-shadow(0 0 10px #00ff66); }
+  to { filter: drop-shadow(0 0 60px #00ff66); }
+}
+
+/* AMOUNT */
+.amount {
+  font-size: 95px;
+  font-weight: bold;
+  margin: 10px 0;
+
+  text-shadow:
+    0 0 20px #00ff66,
+    0 0 60px #00ff66,
+    0 0 120px #00ff66;
+
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #00ff66; }
+  to { text-shadow: 0 0 80px #00ff66; }
+}
+
+/* NEON LINE */
+.neon-line {
+  height: 2px;
+  width: 80%;
+  margin: 10px auto 20px;
+  background: #00ff66;
+
+  box-shadow:
+    0 0 10px #00ff66,
+    0 0 30px #00ff66;
+}
+
+/* BUTTONS */
 .button-row {
   display: flex;
   justify-content: center;
@@ -86,21 +125,29 @@ body {
   margin-bottom: 25px;
 }
 
-/* BUTTON STYLE */
 .btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
   border: 2px solid #00ff66;
   background: transparent;
   color: #00ff66;
-  padding: 15px 35px;
+  padding: 15px 30px;
   border-radius: 20px;
   font-size: 18px;
   cursor: pointer;
 
   box-shadow:
     0 0 10px #00ff66,
-    0 0 25px #00ff66;
+    0 0 30px #00ff66;
 
   transition: 0.2s;
+}
+
+.btn svg {
+  width: 20px;
+  fill: #00ff66;
 }
 
 .btn:active {
@@ -111,32 +158,31 @@ body {
 .keypad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 35px;
   padding: 20px;
 }
 
 /* 3D KEYS */
 .key {
-  font-size: 45px;
+  font-size: 50px;
   font-weight: bold;
   cursor: pointer;
-
   color: #00ff66;
 
   text-shadow:
-    0 0 15px #00ff66,
-    0 0 40px #00ff66,
-    0 6px 0 #003311,
-    0 12px 25px rgba(0,0,0,0.9);
+    0 0 20px #00ff66,
+    0 0 50px #00ff66,
+    0 8px 0 #003311,
+    0 15px 30px rgba(0,0,0,0.9);
 
   transition: 0.15s;
 }
 
 .key:active {
-  transform: scale(0.85);
+  transform: scale(0.8);
 }
 
-/* DELETE BUTTON */
+/* DELETE KEY */
 .delete {
   border: 2px solid #00ff66;
   border-radius: 12px;
@@ -144,7 +190,7 @@ body {
 
   box-shadow:
     0 0 10px #00ff66,
-    0 0 25px #00ff66;
+    0 0 30px #00ff66;
 }
 
 </style>
@@ -152,24 +198,49 @@ body {
 
 <body>
 
-<!-- TOP UI -->
+<!-- TOP -->
 <div class="top-ui">
 
-  <div class="circle-btn" onclick="alert('QR')">⌁</div>
+  <div class="circle-btn">
+    <!-- QR ICON -->
+    <svg viewBox="0 0 24 24">
+      <path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM17 17h4v4h-4z"/>
+    </svg>
+  </div>
 
-  <img src="logo.PNG" class="logo-btn" onclick="alert('Home')">
+  <img src="logo.PNG" class="logo-btn">
 
-  <div class="circle-btn" onclick="alert('AI')">🤖</div>
+  <div class="circle-btn">
+    <!-- AI ICON -->
+    <svg viewBox="0 0 24 24">
+      <path d="M12 2a4 4 0 00-4 4v1H7a3 3 0 00-3 3v5h16v-5a3 3 0 00-3-3h-1V6a4 4 0 00-4-4z"/>
+    </svg>
+  </div>
 
 </div>
 
 <!-- AMOUNT -->
-<div class="amount" id="amount">$0</div>
+<div class="amount" id="amount">$0.00</div>
+
+<div class="neon-line"></div>
 
 <!-- BUTTONS -->
 <div class="button-row">
-  <button class="btn" onclick="request()">Request</button>
-  <button class="btn" onclick="pay()">Pay</button>
+  <button class="btn" onclick="request()">
+    <!-- PAPER PLANE -->
+    <svg viewBox="0 0 24 24">
+      <path d="M2 21l21-9L2 3v7l15 2-15 2z"/>
+    </svg>
+    REQUEST
+  </button>
+
+  <button class="btn" onclick="pay()">
+    <!-- CARD -->
+    <svg viewBox="0 0 24 24">
+      <path d="M2 5h20v14H2zM2 9h20"/>
+    </svg>
+    PAY
+  </button>
 </div>
 
 <!-- KEYPAD -->
@@ -197,7 +268,7 @@ body {
 
 let amount = "";
 
-/* PRESS NUMBER */
+/* INPUT */
 function press(val) {
   if (val === "." && amount.includes(".")) return;
   amount += val;
@@ -210,19 +281,20 @@ function del() {
   update();
 }
 
-/* UPDATE DISPLAY */
+/* FORMAT + UPDATE */
 function update() {
+  let num = parseFloat(amount);
   document.getElementById("amount").innerText =
-    "$" + (amount || "0");
+    "$" + (isNaN(num) ? "0.00" : num.toFixed(2));
 }
 
-/* ACTION BUTTONS */
+/* BUTTON ACTIONS */
 function request() {
-  alert("Requesting $" + (amount || "0"));
+  alert("Request $" + (amount || "0"));
 }
 
 function pay() {
-  alert("Paying $" + (amount || "0"));
+  alert("Pay $" + (amount || "0"));
 }
 
 </script>
