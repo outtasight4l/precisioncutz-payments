@@ -14,8 +14,6 @@ function del() {
 
 /* DISPLAY */
 function updateDisplay() {
-  let display = document.getElementById("display");
-
   let num = parseFloat(amount || "0");
 
   let formatted = num.toLocaleString("en-US", {
@@ -23,7 +21,7 @@ function updateDisplay() {
     maximumFractionDigits: 2
   });
 
-  display.innerText = "$" + formatted;
+  document.getElementById("display").innerText = "$" + formatted;
 }
 
 /* ACTIONS */
@@ -33,18 +31,4 @@ function requestMoney() {
 
 function payMoney() {
   alert("Pay $" + (amount || "0.00"));
-}
-
-function resetAmount() {
-  amount = "";
-  updateDisplay();
-}
-
-/* ICONS */
-function openQR() {
-  alert("QR coming next");
-}
-
-function openAI() {
-  alert("AI coming next");
 }
