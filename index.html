@@ -115,16 +115,16 @@ button:hover {
   box-shadow: 0 2px 0 #003300;
 }
 
-/* stagger animation like grass */
-.key:nth-child(1){animation:float2 3s infinite ease-in-out}
-.key:nth-child(2){animation:float2 3.2s infinite ease-in-out}
-.key:nth-child(3){animation:float2 3.4s infinite ease-in-out}
-.key:nth-child(4){animation:float2 3.6s infinite ease-in-out}
-.key:nth-child(5){animation:float2 3.8s infinite ease-in-out}
-.key:nth-child(6){animation:float2 4s infinite ease-in-out}
-.key:nth-child(7){animation:float2 4.2s infinite ease-in-out}
-.key:nth-child(8){animation:float2 4.4s infinite ease-in-out}
-.key:nth-child(9){animation:float2 4.6s infinite ease-in-out}
+/* FLOATING KEYS */
+.key:nth-child(1){animation:float2 3s infinite}
+.key:nth-child(2){animation:float2 3.2s infinite}
+.key:nth-child(3){animation:float2 3.4s infinite}
+.key:nth-child(4){animation:float2 3.6s infinite}
+.key:nth-child(5){animation:float2 3.8s infinite}
+.key:nth-child(6){animation:float2 4s infinite}
+.key:nth-child(7){animation:float2 4.2s infinite}
+.key:nth-child(8){animation:float2 4.4s infinite}
+.key:nth-child(9){animation:float2 4.6s infinite}
 
 @keyframes float2 {
   0%,100% { transform: translateY(0) rotateX(15deg)}
@@ -136,7 +136,8 @@ button:hover {
 <body>
 
 <div class="logo">
-  <img src="public/logo.png">
+  <!-- 🔥 FIXED PATH -->
+  <img src="/logo.PNG">
 </div>
 
 <div class="amount" id="amount">$0</div>
