@@ -5,7 +5,6 @@ body {
   justify-content: center;
 }
 
-/* APP */
 .app {
   position: relative;
   width: 100%;
@@ -16,26 +15,41 @@ body {
 .ui {
   width: 100%;
   display: block;
-
-  /* 🔥 CRITICAL FIX */
   pointer-events: none;
 }
 
-/* DISPLAY */
+/* 🔥 ULTRA REAL NUMBER MATCH */
 #display {
   position: absolute;
-  top: 32%;
+  top: 38%;
   left: 50%;
   transform: translate(-50%, -50%);
 
-  font-size: 65px;
-  font-weight: bold;
-  color: #00ff66;
+  font-size: 95px;
+  font-weight: 900;
+  letter-spacing: 2px;
 
+  /* 🔥 GRADIENT LIKE UI */
+  background: linear-gradient(
+    to bottom,
+    #b6ff9e 0%,
+    #5cff5c 40%,
+    #00cc44 70%,
+    #009933 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* 🔥 MULTI-LAYER 3D SHADOW */
   text-shadow:
-    0 0 10px #00ff66,
-    0 0 30px #00ff66,
-    0 0 60px #00ff66;
+    0 2px 0 #003311,
+    0 4px 0 #002200,
+    0 6px 0 #001a00,
+    0 10px 20px rgba(0,0,0,0.9),
+    0 0 15px #00ff66,
+    0 0 40px #00ff66,
+    0 0 80px #00ff66;
 
   pointer-events: none;
 }
@@ -49,32 +63,9 @@ body {
   z-index: 10;
 }
 
-/* SIZES */
-.tap.small {
-  width: 50px;
-  height: 50px;
-}
-
-.tap.logo {
-  width: 220px;
-  height: 120px;
-}
-
-.tap.wide {
-  width: 140px;
-  height: 60px;
-}
-
-/* PRESS EFFECT */
+/* PRESS FEEL */
 .tap:active {
   transform: translate(-50%, -50%) scale(0.9);
-  background: rgba(0,255,100,0.15);
+  background: rgba(0,255,100,0.2);
   border-radius: 20px;
 }
-
-/* DEBUG (TURN ON IF NEEDED) */
-/*
-.tap {
-  border: 2px solid red;
-}
-*/
