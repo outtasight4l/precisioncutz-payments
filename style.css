@@ -5,7 +5,7 @@ body {
   justify-content: center;
 }
 
-/* APP CONTAINER */
+/* APP */
 .app {
   position: relative;
   width: 100%;
@@ -16,9 +16,12 @@ body {
 .ui {
   width: 100%;
   display: block;
+
+  /* 🔥 CRITICAL FIX */
+  pointer-events: none;
 }
 
-/* 🔥 LIVE DISPLAY */
+/* DISPLAY */
 #display {
   position: absolute;
   top: 32%;
@@ -35,31 +38,28 @@ body {
     0 0 60px #00ff66;
 
   pointer-events: none;
-  transition: transform 0.1s ease;
 }
 
-/* INVISIBLE BUTTONS */
+/* BUTTON LAYER */
 .tap {
   position: absolute;
   width: 70px;
   height: 70px;
   transform: translate(-50%, -50%);
-  cursor: pointer;
+  z-index: 10;
 }
 
-/* SMALL ICON BUTTONS */
+/* SIZES */
 .tap.small {
   width: 50px;
   height: 50px;
 }
 
-/* LOGO BUTTON */
 .tap.logo {
-  width: 200px;
+  width: 220px;
   height: 120px;
 }
 
-/* REQUEST / PAY */
 .tap.wide {
   width: 140px;
   height: 60px;
@@ -72,7 +72,7 @@ body {
   border-radius: 20px;
 }
 
-/* DEBUG MODE (TURN ON IF NEEDED) */
+/* DEBUG (TURN ON IF NEEDED) */
 /*
 .tap {
   border: 2px solid red;
