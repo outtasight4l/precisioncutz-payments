@@ -7,225 +7,179 @@
 <style>
 body {
   margin: 0;
+  background: radial-gradient(circle at center, #021a05, #000);
   font-family: Arial;
-  background: #00C244;
-  color: black;
+  color: #00ff66;
+  text-align: center;
+  overflow: hidden;
 }
 
-/* TOP */
-.top {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
+/* BACKGROUND GLOW */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0,255,100,0.15), transparent 70%);
+  animation: pulse 4s infinite;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0% { opacity: .3 }
+  50% { opacity: .6 }
+  100% { opacity: .3 }
+}
+
+/* LOGO */
+.logo img {
+  width: 260px;
+  margin-top: 40px;
+  filter: drop-shadow(0 0 25px #00ff66);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,100% { transform: translateY(0) }
+  50% { transform: translateY(-10px) }
 }
 
 /* AMOUNT */
 .amount {
-  text-align: center;
-  font-size: 80px;
-  margin-top: 40px;
+  font-size: 90px;
+  margin: 20px 0;
+  font-weight: bold;
+  text-shadow:
+    0 0 10px #00ff66,
+    0 0 20px #00ff66,
+    0 0 40px #00ff66,
+    0 4px 8px rgba(0,255,100,0.5);
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #00ff66 }
+  to { text-shadow: 0 0 30px #00ff66 }
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+button {
+  width: 140px;
+  height: 50px;
+  border-radius: 15px;
+  border: 2px solid #00ff66;
+  background: transparent;
+  color: #00ff66;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 0 15px #00ff66;
+  transition: .2s;
+}
+
+button:hover {
+  background: #00ff66;
+  color: black;
+  transform: scale(1.05);
 }
 
 /* KEYPAD */
 .keypad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 30px;
-  text-align: center;
-  font-size: 28px;
+  gap: 25px;
+  padding: 40px;
 }
 
-.key { padding: 15px; }
-
-/* BUTTONS */
-.actions {
-  display: flex;
-  gap: 10px;
-  padding: 0 20px;
-}
-
-.btn {
-  flex: 1;
+/* 3D NUMBERS */
+.key {
+  font-size: 36px;
   padding: 15px;
-  border-radius: 25px;
-  border: none;
-}
-
-.pay {
-  margin: 20px;
-  background: black;
-  color: white;
-  padding: 18px;
-  border-radius: 30px;
-  text-align: center;
-}
-
-/* QR MODAL */
-.qr-modal {
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background: black;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-}
-
-.qr-modal img {
-  width: 250px;
-}
-
-/* AI */
-.ai-btn {
-  position: fixed;
-  bottom: 90px;
-  right: 20px;
-  background: black;
-  color: white;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-}
-
-.ai-box {
-  position: fixed;
-  bottom: 160px;
-  right: 20px;
-  width: 260px;
-  background: white;
-  padding: 10px;
   border-radius: 10px;
-  display:none;
+  background: linear-gradient(145deg, #00ff66, #006633);
+  color: black;
+  box-shadow:
+    0 6px 0 #003300,
+    0 0 20px #00ff66;
+  transform: perspective(300px) rotateX(15deg);
+  transition: .1s;
+}
+
+.key:active {
+  transform: scale(.9);
+  box-shadow: 0 2px 0 #003300;
+}
+
+/* stagger animation like grass */
+.key:nth-child(1){animation:float2 3s infinite ease-in-out}
+.key:nth-child(2){animation:float2 3.2s infinite ease-in-out}
+.key:nth-child(3){animation:float2 3.4s infinite ease-in-out}
+.key:nth-child(4){animation:float2 3.6s infinite ease-in-out}
+.key:nth-child(5){animation:float2 3.8s infinite ease-in-out}
+.key:nth-child(6){animation:float2 4s infinite ease-in-out}
+.key:nth-child(7){animation:float2 4.2s infinite ease-in-out}
+.key:nth-child(8){animation:float2 4.4s infinite ease-in-out}
+.key:nth-child(9){animation:float2 4.6s infinite ease-in-out}
+
+@keyframes float2 {
+  0%,100% { transform: translateY(0) rotateX(15deg)}
+  50% { transform: translateY(-6px) rotateX(15deg)}
 }
 </style>
 </head>
 
 <body>
 
-<div class="top">
-  <div onclick="openQR()">📷</div>
-  <div>😊</div>
+<div class="logo">
+  <img src="public/logo.png">
 </div>
 
 <div class="amount" id="amount">$0</div>
 
+<div class="buttons">
+  <button>Request</button>
+  <button>Pay</button>
+</div>
+
 <div class="keypad">
-  <div onclick="press(1)">1</div>
-  <div onclick="press(2)">2</div>
-  <div onclick="press(3)">3</div>
-  <div onclick="press(4)">4</div>
-  <div onclick="press(5)">5</div>
-  <div onclick="press(6)">6</div>
-  <div onclick="press(7)">7</div>
-  <div onclick="press(8)">8</div>
-  <div onclick="press(9)">9</div>
-  <div onclick="press('.')">.</div>
-  <div onclick="press(0)">0</div>
-  <div onclick="back()">⌫</div>
-</div>
+  <div class="key" onclick="press(1)">1</div>
+  <div class="key" onclick="press(2)">2</div>
+  <div class="key" onclick="press(3)">3</div>
 
-<div class="actions">
-  <button class="btn">Pool</button>
-  <button class="btn">Request</button>
-</div>
+  <div class="key" onclick="press(4)">4</div>
+  <div class="key" onclick="press(5)">5</div>
+  <div class="key" onclick="press(6)">6</div>
 
-<div class="pay" onclick="startPayment()">Pay</div>
+  <div class="key" onclick="press(7)">7</div>
+  <div class="key" onclick="press(8)">8</div>
+  <div class="key" onclick="press(9)">9</div>
 
-<!-- QR SCREEN -->
-<div class="qr-modal" id="qrModal">
-  <h2 style="color:white;">Scan to Pay</h2>
-  <img src="qr.PNG">
-  <p id="status" style="color:white;">Waiting for payment...</p>
-  <button onclick="closeQR()">Close</button>
-</div>
-
-<!-- AI -->
-<button class="ai-btn" onclick="toggleAI()">AI</button>
-
-<div class="ai-box" id="aiBox">
-  <textarea id="aiInput"></textarea>
-  <button onclick="askAI()">Send</button>
-  <button onclick="voice()">🎤</button>
-  <p id="aiResponse"></p>
+  <div class="key" onclick="press('.')">.</div>
+  <div class="key" onclick="press(0)">0</div>
+  <div class="key" onclick="del()">⌫</div>
 </div>
 
 <script>
-let val = "";
+let amount = "";
 
-// INPUT
-function press(n) {
-  val += n;
-  document.getElementById("amount").innerText = "$" + val;
+function press(num){
+  if(num==="." && amount.includes(".")) return;
+  amount += num;
+  update();
 }
 
-function back() {
-  val = val.slice(0,-1);
-  document.getElementById("amount").innerText = "$" + (val || 0);
+function del(){
+  amount = amount.slice(0,-1);
+  update();
 }
 
-// PAYMENT
-let orderId;
-
-function startPayment() {
-  orderId = "order_" + Date.now();
-  openQR();
-  checkLoop();
-}
-
-// QR
-function openQR() {
-  document.getElementById("qrModal").style.display = "flex";
-}
-
-function closeQR() {
-  document.getElementById("qrModal").style.display = "none";
-}
-
-// CHECK PAYMENT
-async function checkPayment() {
-  const res = await fetch("https://YOUR-BACKEND.onrender.com/api/check/" + orderId);
-  const data = await res.json();
-
-  if(data.status === "paid"){
-    document.getElementById("status").innerText = "✅ Payment Complete";
-  }
-}
-
-function checkLoop(){
-  setInterval(checkPayment, 5000);
-}
-
-// AI
-function toggleAI(){
-  const box = document.getElementById("aiBox");
-  box.style.display = box.style.display === "block" ? "none" : "block";
-}
-
-// REAL AI (needs backend)
-async function askAI(){
-  const input = document.getElementById("aiInput").value;
-
-  const res = await fetch("https://YOUR-BACKEND.onrender.com/api/ai",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body: JSON.stringify({message:input})
-  });
-
-  const data = await res.json();
-  document.getElementById("aiResponse").innerText = data.reply;
-}
-
-// VOICE
-function voice(){
-  const rec = new webkitSpeechRecognition();
-  rec.start();
-  rec.onresult = e => {
-    document.getElementById("aiInput").value = e.results[0][0].transcript;
-  };
+function update(){
+  document.getElementById("amount").innerText = "$" + (amount || "0");
 }
 </script>
 
