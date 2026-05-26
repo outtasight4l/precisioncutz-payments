@@ -1,36 +1,17 @@
 const express = require("express");
+const path = require("path");
+
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
+// serve static files
+app.use(express.static("public"));
+app.use(express.static(__dirname));
 
-let payments = {};
-
-// PAYMENT WEBHOOK
-app.post("/api/webhook", (req,res)=>{
-  const data = req.body;
-
-  if(data.payment_status === "finished"){
-    payments[data.order_id] = "paid";
-  }
-
-  res.sendStatus(200);
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// CHECK STATUS
-app.get("/api/check/:id",(req,res)=>{
-  res.json({status: payments[req.params.id] || "pending"});
+app.listen(PORT, () => {
+  console.log("Server running on port " + PORT);
 });
-
-// AI (REAL)
-app.post("/api/ai", async (req,res)=>{
-  const msg = req.body.message;
-
-  // Simple smart response (replace with OpenAI later)
-  let reply = "I can help with bookings & payments.";
-
-  if(msg.includes("price")) reply = "Lawn service starts at $50";
-
-  res.json({reply});
-});
-
-app.listen(3000, ()=>console.log("Running"));
