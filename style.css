@@ -1,71 +1,92 @@
 body {
-  margin: 0;
-  background: black;
-  display: flex;
-  justify-content: center;
+    margin: 0;
+    background: black;
+    font-family: Arial, sans-serif;
+    color: #00ff88;
 }
 
 .app {
-  position: relative;
-  width: 100%;
-  max-width: 420px;
+    max-width: 420px;
+    margin: auto;
+    padding: 15px;
 }
 
-/* UI IMAGE */
-.ui {
-  width: 100%;
-  display: block;
-  pointer-events: none;
+/* BACKGROUND IMAGE */
+.header {
+    position: relative;
+}
+.bg {
+    width: 100%;
+    border-radius: 20px;
 }
 
-/* 🔥 ULTRA REAL NUMBER MATCH */
-#display {
-  position: absolute;
-  top: 38%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* PRICE BOX */
+.price-box {
+    margin-top: -80px;
+    position: relative;
+    z-index: 2;
 
-  font-size: 95px;
-  font-weight: 900;
-  letter-spacing: 2px;
+    border: 2px solid #00ff88;
+    border-radius: 20px;
+    padding: 20px;
 
-  /* 🔥 GRADIENT LIKE UI */
-  background: linear-gradient(
-    to bottom,
-    #b6ff9e 0%,
-    #5cff5c 40%,
-    #00cc44 70%,
-    #009933 100%
-  );
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
 
-  /* 🔥 MULTI-LAYER 3D SHADOW */
-  text-shadow:
-    0 2px 0 #003311,
-    0 4px 0 #002200,
-    0 6px 0 #001a00,
-    0 10px 20px rgba(0,0,0,0.9),
-    0 0 15px #00ff66,
-    0 0 40px #00ff66,
-    0 0 80px #00ff66;
-
-  pointer-events: none;
+    overflow: hidden;
 }
 
-/* BUTTON LAYER */
-.tap {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  transform: translate(-50%, -50%);
-  z-index: 10;
+/* DOLLAR */
+.dollar {
+    font-size: 30px;
+    margin-right: 10px;
 }
 
-/* PRESS FEEL */
-.tap:active {
-  transform: translate(-50%, -50%) scale(0.9);
-  background: rgba(0,255,100,0.2);
-  border-radius: 20px;
+/* PRICE TEXT */
+#price {
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center;
+
+    /* KEY: auto scaling */
+    font-size: clamp(24px, 8vw, 60px);
+
+    text-shadow: 0 0 20px #00ff88;
+}
+
+/* BUTTONS */
+.actions {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.actions button {
+    flex: 1;
+    padding: 15px;
+    border-radius: 15px;
+    border: 2px solid #00ff88;
+    background: transparent;
+    color: #00ff88;
+    font-weight: bold;
+}
+
+/* KEYPAD GRID */
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.keypad button {
+    padding: 25px;
+    font-size: 24px;
+    border-radius: 15px;
+    border: 2px solid #00ff88;
+    background: transparent;
+    color: #00ff88;
 }
