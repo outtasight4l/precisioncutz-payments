@@ -1,274 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-  />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Precision Cutz Pay</title>
 
-  <title>Precision Cutz</title>
-
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      -webkit-tap-highlight-color:transparent;
-    }
-
-    html,
-    body{
-      width:100%;
-      height:100%;
-      overflow:hidden;
-      background:#000;
-      font-family:Arial, sans-serif;
-    }
-
-    body{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
-
-    .app{
-      position:relative;
-      width:100vw;
-      height:100vh;
-      overflow:hidden;
-      background:#000;
-    }
-
-    .bg{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      object-position:center;
-      z-index:1;
-      user-select:none;
-      pointer-events:none;
-    }
-
-    .overlay{
-      position:absolute;
-      inset:0;
-      z-index:5;
-    }
-
-    /* AI BUTTON */
-    .ai-btn{
-      position:absolute;
-      top:2%;
-      right:2%;
-      width:24%;
-      height:11%;
-      background:transparent;
-      border:none;
-      cursor:pointer;
-    }
-
-    /* QR BUTTON */
-    .qr-btn{
-      position:absolute;
-      top:2%;
-      left:2%;
-      width:24%;
-      height:11%;
-      background:transparent;
-      border:none;
-      cursor:pointer;
-    }
-
-    /* DISPLAY */
-    .display{
-      position:absolute;
-      top:43%;
-      left:28%;
-      width:56%;
-      height:9%;
-      background:transparent;
-      border:none;
-      outline:none;
-      color:#8dff00;
-      font-size:2.2rem;
-      text-align:center;
-      font-weight:bold;
-    }
-
-    /* REQUEST */
-    .request-btn{
-      position:absolute;
-      top:56%;
-      left:8%;
-      width:38%;
-      height:8%;
-      background:transparent;
-      border:none;
-      cursor:pointer;
-    }
-
-    /* PAY */
-    .pay-btn{
-      position:absolute;
-      top:56%;
-      right:6%;
-      width:38%;
-      height:8%;
-      background:transparent;
-      border:none;
-      cursor:pointer;
-    }
-
-    /* NUMBER PAD */
-    .num{
-      position:absolute;
-      width:18%;
-      height:9%;
-      background:transparent;
-      border:none;
-      cursor:pointer;
-    }
-
-    .n1{top:66%;left:8%;}
-    .n2{top:66%;left:40%;}
-    .n3{top:66%;right:8%;}
-
-    .n4{top:77%;left:8%;}
-    .n5{top:77%;left:40%;}
-    .n6{top:77%;right:8%;}
-
-    .n7{top:88%;left:8%;}
-    .n8{top:88%;left:40%;}
-    .n9{top:88%;right:8%;}
-
-    .n0{
-      top:99%;
-      left:40%;
-      transform:translateY(-100%);
-    }
-
-    .dot{
-      top:99%;
-      left:8%;
-      transform:translateY(-100%);
-    }
-
-    .back{
-      top:99%;
-      right:8%;
-      transform:translateY(-100%);
-    }
-  </style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="app">
+<!-- ================= SIDEBAR ================= -->
+<div id="sidebar" class="sidebar">
 
-    <!-- BACKGROUND -->
-    <img src="ui.PNG" class="bg" alt="UI" />
-
-    <!-- BUTTON OVERLAY -->
-    <div class="overlay">
-
-      <!-- AI -->
-      <button class="ai-btn" onclick="openAI()"></button>
-
-      <!-- QR -->
-      <button class="qr-btn" onclick="scanQR()"></button>
-
-      <!-- DISPLAY -->
-      <input
-        type="text"
-        id="amount"
-        class="display"
-        readonly
-      />
-
-      <!-- REQUEST -->
-      <button class="request-btn" onclick="requestPayment()"></button>
-
-      <!-- PAY -->
-      <button class="pay-btn" onclick="payNow()"></button>
-
-      <!-- NUMBERS -->
-      <button class="num n1" onclick="press('1')"></button>
-      <button class="num n2" onclick="press('2')"></button>
-      <button class="num n3" onclick="press('3')"></button>
-
-      <button class="num n4" onclick="press('4')"></button>
-      <button class="num n5" onclick="press('5')"></button>
-      <button class="num n6" onclick="press('6')"></button>
-
-      <button class="num n7" onclick="press('7')"></button>
-      <button class="num n8" onclick="press('8')"></button>
-      <button class="num n9" onclick="press('9')"></button>
-
-      <button class="num dot" onclick="press('.')"></button>
-      <button class="num n0" onclick="press('0')"></button>
-      <button class="num back" onclick="backspace()"></button>
-
-    </div>
+  <div class="sidebar-header">
+    <h2>MENU</h2>
   </div>
 
-  <script>
-    const amountInput = document.getElementById("amount");
+  <div class="sidebar-item active" onclick="goHome()">
+    🏠 HOME
+  </div>
 
-    function press(value){
-      amountInput.value += value;
-    }
+  <div class="sidebar-item" onclick="openPayments()">
+    💳 PAYMENTS
+  </div>
 
-    function backspace(){
-      amountInput.value =
-        amountInput.value.slice(0, -1);
-    }
+  <div class="sidebar-item" onclick="openReceipts()">
+    🧾 RECEIPTS
+  </div>
 
-    function scanQR(){
-      alert("QR Scanner Ready");
-    }
+  <div class="sidebar-item" onclick="openCustomers()">
+    👥 CUSTOMERS
+  </div>
 
-    function openAI(){
-      const question = prompt("Ask AI Assistant");
+  <div class="sidebar-item" onclick="openWallet()">
+    👛 WALLET
+  </div>
 
-      if(question){
-        alert("AI Assistant: " + question);
-      }
-    }
+  <div class="sidebar-item" onclick="openAnalytics()">
+    📊 ANALYTICS
+  </div>
 
-    function requestPayment(){
+  <div class="sidebar-item" onclick="openRoutes()">
+    📍 ROUTES
+  </div>
 
-      const amount = amountInput.value;
+  <div class="sidebar-item" onclick="openSettings()">
+    ⚙️ SETTINGS
+  </div>
 
-      if(!amount){
-        alert("Enter amount");
-        return;
-      }
+  <div class="sidebar-item" onclick="openSupport()">
+    🎧 SUPPORT
+  </div>
 
-      const paymentText =
-        `Precision Cutz Request\n\nAmount: $${amount}`;
+  <div class="sidebar-divider"></div>
 
-      navigator.clipboard.writeText(paymentText);
+  <div class="sidebar-item logout" onclick="logout()">
+    🚪 LOG OUT
+  </div>
 
-      alert("Payment request copied");
-    }
+</div>
 
-    function payNow(){
+<!-- ================= OVERLAY ================= -->
+<div id="overlay" onclick="closeSidebar()"></div>
 
-      const amount = amountInput.value;
+<!-- ================= APP ================= -->
+<div class="app">
 
-      if(!amount){
-        alert("Enter amount");
-        return;
-      }
+  <!-- TOP BAR -->
+  <div class="top-bar">
+    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  </div>
 
-      // YOUR NOWPAYMENTS LINK
-      window.location.href =
-        "https://nowpayments.io/payment/?iid=6386319463";
-    }
-  </script>
+  <!-- YOUR EXISTING UI HERE -->
+  <div class="content">
+    <h1>Precision Cutz Pay</h1>
+  </div>
 
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button onclick="toggleSidebar()">MENU</button>
+    <button onclick="goHome()">HOME</button>
+    <button onclick="openSupport()">SUPPORT</button>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
 </body>
 </html>
