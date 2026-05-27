@@ -1,44 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Precision Cutz Payments</title>
-<link rel="stylesheet" href="style.css">
+<title>Precision Cutz POS</title>
+
+<style>
+body {
+  margin: 0;
+  background: #050505;
+  font-family: Arial, sans-serif;
+  color: #00ff66;
+  text-align: center;
+}
+
+/* LOGO */
+h1 {
+  margin-top: 20px;
+  font-size: 28px;
+  letter-spacing: 2px;
+}
+
+/* DISPLAY BOX */
+#display {
+  width: 85%;
+  margin: 20px auto;
+  padding: 25px;
+  font-size: 50px;
+  border: 2px solid #00ff66;
+  border-radius: 15px;
+  background: black;
+  color: #00ff66;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* BUTTON ROW */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px;
+}
+
+button {
+  background: black;
+  border: 2px solid #00ff66;
+  color: #00ff66;
+  padding: 15px 25px;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+/* KEYPAD */
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 90px);
+  gap: 20px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.key {
+  font-size: 32px;
+  padding: 20px;
+  border: 2px solid #00ff66;
+  border-radius: 12px;
+  background: black;
+}
+
+.key:active {
+  background: #00ff66;
+  color: black;
+}
+</style>
 </head>
 
 <body>
 
-<div class="app">
+<h1>PRECISION CUTZ</h1>
 
-  <img src="ui.PNG" class="ui">
+<div id="display">$0.00</div>
 
-  <!-- 🔥 PERFECT MATCH DISPLAY -->
-  <div id="display">$0.00</div>
-
-  <!-- BUTTON OVERLAY -->
-  <div class="tap wide" style="top:48%; left:30%;" onclick="requestMoney()"></div>
-  <div class="tap wide" style="top:48%; left:70%;" onclick="payMoney()"></div>
-
-  <div class="tap" style="top:63%; left:20%;" onclick="press('1')"></div>
-  <div class="tap" style="top:63%; left:50%;" onclick="press('2')"></div>
-  <div class="tap" style="top:63%; left:80%;" onclick="press('3')"></div>
-
-  <div class="tap" style="top:71%; left:20%;" onclick="press('4')"></div>
-  <div class="tap" style="top:71%; left:50%;" onclick="press('5')"></div>
-  <div class="tap" style="top:71%; left:80%;" onclick="press('6')"></div>
-
-  <div class="tap" style="top:79%; left:20%;" onclick="press('7')"></div>
-  <div class="tap" style="top:79%; left:50%;" onclick="press('8')"></div>
-  <div class="tap" style="top:79%; left:80%;" onclick="press('9')"></div>
-
-  <div class="tap" style="top:87%; left:20%;" onclick="press('.')"></div>
-  <div class="tap" style="top:87%; left:50%;" onclick="press('0')"></div>
-  <div class="tap" style="top:87%; left:80%;" onclick="del()"></div>
-
+<div class="actions">
+  <button onclick="requestMoney()">REQUEST</button>
+  <button onclick="pay()">PAY</button>
 </div>
 
-<script src="app.js"></script>
+<div class="keypad">
+  <div class="key" onclick="press(1)">1</div>
+  <div class="key" onclick="press(2)">2</div>
+  <div class="key" onclick="press(3)">3</div>
+  <div class="key" onclick="press(4)">4</div>
+  <div class="key" onclick="press(5)">5</div>
+  <div class="key" onclick="press(6)">6</div>
+  <div class="key" onclick="press(7)">7</div>
+  <div class="key" onclick="press(8)">8</div>
+  <div class="key" onclick="press(9)">9</div>
+  <div class="key" onclick="clearAll()">C</div>
+  <div class="key" onclick="press(0)">0</div>
+  <div class="key" onclick="backspace()">⌫</div>
+</div>
+
+<script>
+let amount = 0;
+
+/* FORMAT DISPLAY LIKE REAL POS */
+function updateDisplay() {
+  let dollars = (amount / 100).toFixed(2);
+  document.getElementById("display").innerText = "$" + dollars;
+}
+
+/* PRESS NUMBER (shifts cents like real payment apps) */
+function press(num) {
+  amount = amount * 10 + num;
+
+  // limit max size
+  if (amount > 999999999) amount = 999999999;
+
+  updateDisplay();
+}
+
+/* CLEAR */
+function clearAll() {
+  amount = 0;
+  updateDisplay();
+}
+
+/* DELETE */
+function backspace() {
+  amount = Math.floor(amount / 10);
+  updateDisplay();
+}
+
+/* PAY BUTTON */
+function pay() {
+  let value = (amount / 100).toFixed(2);
+
+  if (amount === 0) {
+    alert("Enter amount first");
+    return;
+  }
+
+  window.location.href = `https://cash.app/$cryptogang85/${value}`;
+}
+
+/* REQUEST BUTTON */
+function requestMoney() {
+  let value = (amount / 100).toFixed(2);
+
+  if (amount === 0) {
+    alert("Enter amount first");
+    return;
+  }
+
+  alert("Request sent for $" + value);
+}
+</script>
 
 </body>
 </html>
