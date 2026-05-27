@@ -1,43 +1,17 @@
-// ==============================
-// 🔥 WAKE BACKEND
-// ==============================
-function wakeServer() {
-  fetch("https://precisioncutz-payments.onrender.com/ai", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: "ping" })
-  }).catch(() => {});
+let input = "";
+
+// NUMBER INPUT
+function press(num) {
+  input += num;
+  document.getElementById("display").innerText = input;
 }
 
-wakeServer();
+// QR BUTTON
+function scanQR() {
+  alert("QR Scanner clicked");
+}
 
-
-// ==============================
-// 🤖 AI FUNCTION
-// ==============================
-async function openAI() {
-  try {
-    const message = prompt("Ask AI Assistant:");
-    if (!message) return;
-
-    const res = await fetch("https://precisioncutz-payments.onrender.com/ai", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message })
-    });
-
-    if (!res.ok) throw new Error("Server offline");
-
-    const data = await res.json();
-
-    alert(data.reply || "No response");
-
-  } catch (err) {
-    console.error(err);
-    alert("⚠️ AI waking up. Try again.");
-  }
+// AI BUTTON
+function openAI() {
+  alert("AI Assistant clicked");
 }
