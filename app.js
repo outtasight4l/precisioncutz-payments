@@ -1,5 +1,5 @@
 // ==============================
-// 🔥 WAKE BACKEND (Render Fix)
+// 🔥 WAKE BACKEND
 // ==============================
 function wakeServer() {
   fetch("https://precisioncutz-payments.onrender.com/ai", {
@@ -15,7 +15,7 @@ wakeServer();
 
 
 // ==============================
-// 🤖 AI ASSISTANT (STABLE)
+// 🤖 AI FUNCTION
 // ==============================
 async function openAI() {
   try {
@@ -34,20 +34,10 @@ async function openAI() {
 
     const data = await res.json();
 
-    document.getElementById("output").innerText =
-      data.reply || "No response";
+    alert(data.reply || "No response");
 
   } catch (err) {
     console.error(err);
-
-    alert("⚠️ AI waking up. Try again in 5 seconds.");
+    alert("⚠️ AI waking up. Try again.");
   }
-}
-
-
-// ==============================
-// 📷 QR PLACEHOLDER
-// ==============================
-function scanQR() {
-  alert("QR Scanner coming next");
 }
