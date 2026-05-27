@@ -3,19 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Precision Cutz Pay</title>
-
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00ff88">
-
-<script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
 body {
   margin: 0;
-  background: black;
   font-family: Arial, sans-serif;
+  background: black;
   color: #00ff88;
   text-align: center;
 }
@@ -25,47 +19,41 @@ body {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: url("ui.PNG") center/cover no-repeat;
+  background: url("ui.PNG") no-repeat center center;
+  background-size: cover;
   z-index: -1;
 }
 
-/* TOP ICONS */
-.top-icons {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
-}
-
-.icon {
-  border: 2px solid #00ff88;
-  border-radius: 50%;
-  padding: 12px;
-  font-size: 20px;
-  box-shadow: 0 0 15px #00ff88;
-  cursor: pointer;
-}
-
-/* AMOUNT BOX */
+/* PRICE BOX */
 .amount-box {
-  margin: 200px auto 20px;
-  width: 85%;
-  padding: 20px;
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 80px;
   border-radius: 20px;
   border: 2px solid #00ff88;
-  box-shadow: 0 0 25px #00ff88 inset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px #00ff88;
   overflow: hidden;
 }
 
+/* PRICE TEXT (AUTO FIT) */
 #amount {
-  font-size: clamp(40px, 10vw, 90px);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-weight: bold;
   text-shadow: 0 0 20px #00ff88;
+  transition: 0.2s;
 }
 
 /* BUTTONS */
 .buttons {
+  position: absolute;
+  top: 48%;
+  width: 100%;
   display: flex;
   justify-content: center;
   gap: 20px;
@@ -73,32 +61,34 @@ body {
 
 .btn {
   border: 2px solid #00ff88;
-  padding: 15px 30px;
-  border-radius: 12px;
+  padding: 12px 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 15px #00ff88;
   cursor: pointer;
-  box-shadow: 0 0 10px #00ff88;
 }
 
 /* KEYPAD */
 .keypad {
-  margin-top: 20px;
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  padding: 20px;
+  padding: 0 30px;
 }
 
 .key {
   border: 2px solid #00ff88;
-  padding: 30px;
-  border-radius: 15px;
+  padding: 25px;
+  border-radius: 20px;
   font-size: 24px;
-  box-shadow: 0 0 10px #00ff88;
+  box-shadow: 0 0 15px #00ff88;
   cursor: pointer;
 }
 
-/* POPUPS */
-.popup {
+/* MODAL */
+.modal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -106,30 +96,9 @@ body {
   background: black;
   border: 2px solid #00ff88;
   padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 25px #00ff88;
+  border-radius: 20px;
+  box-shadow: 0 0 30px #00ff88;
   display: none;
-  z-index: 1000;
-}
-
-.popup button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  background: #00ff88;
-  border: none;
-  border-radius: 8px;
-}
-
-/* OVERLAY */
-.overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  top: 0;
-  left: 0;
-  display: none;
-  z-index: 999;
 }
 </style>
 </head>
@@ -138,118 +107,96 @@ body {
 
 <div class="bg"></div>
 
-<div class="top-icons">
-  <div class="icon" onclick="openQR()">📷</div>
-  <div class="icon" onclick="openAI()">🤖</div>
-</div>
-
+<!-- PRICE -->
 <div class="amount-box">
   <div id="amount">$0.00</div>
 </div>
 
+<!-- BUTTONS -->
 <div class="buttons">
-  <div class="btn" onclick="request()">REQUEST</div>
-  <div class="btn" onclick="pay()">PAY</div>
+  <div class="btn" onclick="requestPay()">REQUEST</div>
+  <div class="btn" onclick="payNow()">PAY</div>
 </div>
 
+<!-- KEYPAD -->
 <div class="keypad">
-  <div class="key" onclick="add('1')">1</div>
-  <div class="key" onclick="add('2')">2</div>
-  <div class="key" onclick="add('3')">3</div>
-  <div class="key" onclick="add('4')">4</div>
-  <div class="key" onclick="add('5')">5</div>
-  <div class="key" onclick="add('6')">6</div>
-  <div class="key" onclick="add('7')">7</div>
-  <div class="key" onclick="add('8')">8</div>
-  <div class="key" onclick="add('9')">9</div>
-  <div class="key" onclick="add('.')">.</div>
-  <div class="key" onclick="add('0')">0</div>
-  <div class="key" onclick="clearAll()">⌫</div>
+  <div class="key" onclick="press(1)">1</div>
+  <div class="key" onclick="press(2)">2</div>
+  <div class="key" onclick="press(3)">3</div>
+  <div class="key" onclick="press(4)">4</div>
+  <div class="key" onclick="press(5)">5</div>
+  <div class="key" onclick="press(6)">6</div>
+  <div class="key" onclick="press(7)">7</div>
+  <div class="key" onclick="press(8)">8</div>
+  <div class="key" onclick="press(9)">9</div>
+  <div class="key" onclick="press('.')">.</div>
+  <div class="key" onclick="press(0)">0</div>
+  <div class="key" onclick="clearAmount()">⌫</div>
 </div>
 
-<div class="overlay" id="overlay"></div>
-
-<!-- AI POPUP -->
-<div class="popup" id="aiPopup">
-  <h2>🤖 AI SYSTEM</h2>
-  <p>Voice control & automation coming next</p>
-  <button onclick="closePopup()">Close</button>
-</div>
-
-<!-- QR SCANNER -->
-<div class="popup" id="qrPopup">
-  <div id="reader" style="width:300px"></div>
-  <button onclick="closePopup()">Close</button>
+<!-- MODAL -->
+<div id="modal" class="modal">
+  <h2>💳 Payment Ready</h2>
+  <p id="payAmount"></p>
+  <br>
+  <div class="btn" onclick="closeModal()">Close</div>
 </div>
 
 <script>
 let value = "";
 
-function add(num) {
-  value += num;
-  update();
+/* AUTO SIZE FUNCTION (KEY FIX) */
+function resizeText() {
+  const el = document.getElementById("amount");
+  let length = el.innerText.length;
+
+  let size = 60; // base size
+
+  if (length > 10) size = 45;
+  if (length > 15) size = 35;
+  if (length > 20) size = 25;
+
+  el.style.fontSize = size + "px";
 }
 
-function clearAll() {
-  value = "";
-  update();
+/* UPDATE DISPLAY */
+function updateDisplay() {
+  let display = value || "0";
+  document.getElementById("amount").innerText = "$" + display;
+  resizeText();
 }
 
-function update() {
-  let num = parseFloat(value);
-  document.getElementById("amount").innerText =
-    isNaN(num) ? "$0.00" : "$" + num.toFixed(2);
+/* INPUT */
+function press(num) {
+  if (value.length < 15) {
+    value += num;
+    updateDisplay();
+  }
 }
 
-/* PAY */
-function pay() {
-  if (!value) return alert("Enter amount");
-
-  const amount = parseFloat(value).toFixed(2);
-  window.location.href = `https://cash.app/$cryptogang85/${amount}`;
+/* CLEAR */
+function clearAmount() {
+  value = value.slice(0, -1);
+  updateDisplay();
 }
 
 /* REQUEST */
-function request() {
-  alert("Request sent (connect backend later)");
+function requestPay() {
+  alert("Request sent for $" + (value || "0"));
 }
 
-/* AI */
-function openAI() {
-  showPopup("aiPopup");
+/* PAY */
+function payNow() {
+  document.getElementById("payAmount").innerText = "Amount: $" + (value || "0");
+  document.getElementById("modal").style.display = "block";
 }
 
-/* QR */
-function openQR() {
-  showPopup("qrPopup");
-
-  const qr = new Html5Qrcode("reader");
-  qr.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    (text) => {
-      alert("Scanned: " + text);
-      qr.stop();
-      closePopup();
-    }
-  );
+/* CLOSE MODAL */
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
 }
 
-/* POPUP CONTROL */
-function showPopup(id) {
-  document.getElementById("overlay").style.display = "block";
-  document.getElementById(id).style.display = "block";
-}
-
-function closePopup() {
-  document.getElementById("overlay").style.display = "none";
-  document.querySelectorAll(".popup").forEach(p => p.style.display = "none");
-}
-
-/* SERVICE WORKER */
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
+updateDisplay();
 </script>
 
 </body>
