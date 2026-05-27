@@ -11,41 +11,38 @@ body {
   height: 100vh;
 }
 
-/* UI IMAGE */
+/* UI BACKGROUND */
 .ui-bg {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* AMOUNT DISPLAY */
+/* AMOUNT AREA */
 .amount-wrapper {
   position: absolute;
-  top: 29%;
-  left: 18%;
-  width: 64%;
+  top: 30%;
+  left: 15%;
+  width: 70%;
   height: 7%;
 
   display: flex;
   align-items: center;
-  gap: 10px;
 
   pointer-events: none;
 }
 
-/* DOLLAR SIGN */
 .dollar {
-  font-size: 6vw;
+  font-size: 7vw;
   color: #00ff99;
   text-shadow: 0 0 20px #00ff99;
+  margin-right: 10px;
 }
 
-/* NUMBER DISPLAY */
 #amount {
   flex: 1;
   font-size: 6vw;
   color: #00ff99;
-  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-shadow: 0 0 20px #00ff99;
@@ -54,21 +51,20 @@ body {
 /* TOUCH LAYER */
 .touch-layer {
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
+  top: 0;
+  left: 0;
 }
 
 /* INVISIBLE BUTTONS */
-.b, .action {
+.btn, .action {
   position: absolute;
   background: transparent;
   border: none;
 }
 
-/* ===== GRID POSITIONING (MATCHES IMAGE EXACTLY) ===== */
-
+/* NUMBER GRID */
 .b1 { top: 57%; left: 12%; width: 20%; height: 8%; }
 .b2 { top: 57%; left: 40%; width: 20%; height: 8%; }
 .b3 { top: 57%; left: 68%; width: 20%; height: 8%; }
@@ -85,6 +81,6 @@ body {
 .b0   { top: 87%; left: 40%; width: 20%; height: 8%; }
 .bdel { top: 87%; left: 68%; width: 20%; height: 8%; }
 
-/* REQUEST / PAY */
+/* ACTION BUTTONS */
 .request { top: 46%; left: 12%; width: 35%; height: 7%; }
 .pay     { top: 46%; left: 53%; width: 35%; height: 7%; }
