@@ -1,18 +1,23 @@
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open('app').then(cache => {
-      return cache.addAll([
-        '/',
-        '/index.html'
-      ]);
-    })
-  );
+// ==============================
+// 🔧 SAFE SERVICE WORKER
+// ==============================
+
+self.addEventListener("install", event => {
+  self.skipWaiting();
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(res => {
-      return res || fetch(e.request);
+self.addEventListener("activate", event => {
+  event.waitUntil(self.clients.claim());
+});
+
+// ✅ SAFE FETCH HANDLER (NO CRASH)
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    fetch(event.request).catch(() => {
+      return new Response("Offline", {
+        status: 503,
+        statusText: "Offline"
+      });
     })
   );
 });
