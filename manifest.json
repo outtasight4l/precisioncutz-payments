@@ -1,1 +1,15 @@
-
+{
+  "name": "Precision Cutz Terminal",
+  "short_name": "Cutz POS",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00ff66",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
