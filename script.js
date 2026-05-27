@@ -1,36 +1,29 @@
-let value = "";
+let amount = "";
 
 function press(num) {
-  if (value.length < 10) {
-    value += num;
-    update();
-  }
+  amount += num;
+  document.getElementById("amount").innerText = "$" + amount;
 }
 
-function clearDisplay() {
-  value = "";
-  update();
+function clearAmount() {
+  amount = amount.slice(0, -1);
+  document.getElementById("amount").innerText = "$" + (amount || "0.00");
 }
 
-function update() {
-  document.getElementById("display").innerText =
-    "$" + (value || "0.00");
-}
-
-/* BUTTON ACTIONS */
-
-function openQR() {
-  alert("QR Scanner coming next");
-}
-
-function openAI() {
-  alert("AI Assistant opening");
+function payNow() {
+  alert("Processing Payment: $" + amount);
 }
 
 function requestMoney() {
-  alert("Request $" + value);
+  alert("Requesting: $" + amount);
 }
 
-function payMoney() {
-  alert("Pay $" + value);
+function toggleMenu() {
+  document.getElementById("sidebar").classList.toggle("active");
 }
+
+/* SPLASH TO APP */
+setTimeout(() => {
+  document.getElementById("splash").style.display = "none";
+  document.getElementById("app").classList.remove("hidden");
+}, 7000);
