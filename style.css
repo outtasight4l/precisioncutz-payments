@@ -1,125 +1,28 @@
 body {
-margin:0;
-background:black;
-font-family:Arial;
+  margin: 0;
+  font-family: Arial;
+  background: black;
+  color: #00ff00;
+  text-align: center;
 }
 
-.app {
-position:relative;
-max-width:420px;
-margin:auto;
+.container {
+  padding: 40px;
 }
 
-.ui {
-width:100%;
+button {
+  display: block;
+  width: 80%;
+  margin: 15px auto;
+  padding: 15px;
+  font-size: 18px;
+  background: black;
+  color: #00ff00;
+  border: 2px solid #00ff00;
+  border-radius: 10px;
 }
 
-.btn {
-position:absolute;
-}
-
-.qr {
-top:5%;
-left:6%;
-width:70px;
-height:70px;
-}
-
-.ai {
-top:5%;
-right:6%;
-width:70px;
-height:70px;
-}
-
-.request {
-top:50%;
-left:8%;
-width:36%;
-height:60px;
-}
-
-.pay {
-top:50%;
-right:8%;
-width:36%;
-height:60px;
-}
-
-.amount {
-position:absolute;
-top:36%;
-left:30%;
-color:#00ff99;
-font-size:32px;
-}
-
-.keypad {
-position:absolute;
-bottom:4%;
-width:100%;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:18px;
-padding:0 40px;
-}
-
-.keypad button {
-font-size:28px;
-background:none;
-color:#00ff99;
-border:none;
-}
-
-/* MODALS */
-.modal {
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.9);
-justify-content:center;
-align-items:center;
-}
-
-.box {
-width:90%;
-max-width:400px;
-height:70%;
-background:black;
-border:2px solid #00ff99;
-display:flex;
-flex-direction:column;
-}
-
-.header {
-color:#00ff99;
-padding:10px;
-display:flex;
-justify-content:space-between;
-}
-
-.messages {
-flex:1;
-overflow:auto;
-padding:10px;
-color:white;
-}
-
-.input {
-display:flex;
-}
-
-.input input {
-flex:1;
-background:black;
-color:white;
-border:1px solid #00ff99;
-}
-
-.input button {
-background:#00ff99;
-border:none;
+#output {
+  margin-top: 20px;
+  font-size: 16px;
 }
