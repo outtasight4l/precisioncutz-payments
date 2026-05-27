@@ -3,126 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Precision Cutz</title>
-
-<link rel="manifest" href="manifest.json">
+<title>Precision Cutz LIVE</title>
 
 <style>
 body {
   margin: 0;
+  overflow: hidden;
   background: black;
-}
-
-/* APP CONTAINER */
-.app {
-  position: relative;
-  max-width: 420px;
-  margin: auto;
+  font-family: Arial;
 }
 
 /* UI IMAGE */
-.ui {
-  width: 100%;
-  display: block;
-}
-
-/* PRICE DISPLAY */
-#amount {
-  position: absolute;
-  top: 33%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: #00ff88;
-  font-weight: bold;
-  text-shadow: 0 0 20px #00ff88;
-  white-space: nowrap;
-}
-
-/* INVISIBLE BUTTONS */
-.hit {
-  position: absolute;
-  background: transparent;
-}
-
-/* REQUEST */
-#request {
-  top: 45%;
-  left: 15%;
-  width: 30%;
-  height: 8%;
-}
-
-/* PAY */
-#pay {
-  top: 45%;
-  right: 15%;
-  width: 30%;
-  height: 8%;
-}
-
-/* QR BUTTON */
-#qr {
-  top: 12%;
-  left: 8%;
-  width: 12%;
-  height: 8%;
-}
-
-/* AI BUTTON */
-#ai {
-  top: 12%;
-  right: 8%;
-  width: 12%;
-  height: 8%;
-}
-
-/* KEYS */
-.key { width: 22%; height: 9%; }
-
-.k1 { top: 55%; left: 10%; }
-.k2 { top: 55%; left: 39%; }
-.k3 { top: 55%; left: 68%; }
-
-.k4 { top: 66%; left: 10%; }
-.k5 { top: 66%; left: 39%; }
-.k6 { top: 66%; left: 68%; }
-
-.k7 { top: 77%; left: 10%; }
-.k8 { top: 77%; left: 39%; }
-.k9 { top: 77%; left: 68%; }
-
-.kdot { top: 88%; left: 10%; }
-.k0   { top: 88%; left: 39%; }
-.kdel { top: 88%; left: 68%; }
-
-/* MODAL */
-.modal {
+#bg {
   position: fixed;
-  top: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* FX LAYER */
+#fx {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* 💸 MONEY GLOW */
+#moneyGlow {
+  position: absolute;
+  top: 32%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: black;
-  border: 2px solid #00ff88;
-  padding: 20px;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 80px;
   border-radius: 20px;
-  box-shadow: 0 0 25px #00ff88;
-  display: none;
-  color: #00ff88;
-  text-align: center;
+  box-shadow: 0 0 40px rgba(0,255,150,0.6);
+  animation: pulse 2s infinite;
+}
+
+/* 🤖 AI ICON GLOW */
+#aiGlow {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0,255,150,0.7);
+  animation: aiPulse 1.5s infinite;
+}
+
+/* 🎙 VOICE BREATH EFFECT */
+#voicePulse {
+  position: absolute;
+  top: 8%;
+  right: 5%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,255,150,0.4);
+  animation: voiceWave 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px rgba(0,255,150,0.3); }
+  50% { box-shadow: 0 0 60px rgba(0,255,150,0.9); }
+  100% { box-shadow: 0 0 20px rgba(0,255,150,0.3); }
+}
+
+@keyframes aiPulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
+
+@keyframes voiceWave {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<div class="app">
+<img src="ui.png" id="bg">
+<canvas id="fx"></canvas>
 
-  <img src="ui.PNG" class="ui">
+<div id="moneyGlow"></div>
+<div id="aiGlow"></div>
+<div id="voicePulse"></div>
 
-  <div id="amount">$0.00</div>
+<script>
+const canvas = document.getElementById("fx");
+const ctx = canvas.getContext("2d");
 
-  <!-- BUTTONS -->
-  <div id="request" class="hit" onclick="requestPay()"></div>
-  <div id="pay" class="hit" onclick="payNow()"></div>
-  <div id="qr" class="hit" onclick="openQR
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+/* 🌿 GRASS */
+let grass = [];
+for (let i = 0; i < 100; i++) {
+  grass.push({
+    x: Math.random() * canvas.width,
+    y: canvas.height + Math.random() * 100,
+    height: Math.random() * 50 + 20,
+    sway: Math.random() * 2,
+    speed: Math.random() * 0.5 + 0.2
+  });
+}
+
+/* ✨ PARTICLES */
+let particles = [];
+for (let i = 0; i < 50; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 3,
+    speed: Math.random() * 0.6
+  });
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  /* 🌿 DRAW GRASS */
+  ctx.strokeStyle = "rgba(0,255,120,0.4)";
+  ctx.lineWidth = 2;
+
+  grass.forEach(g => {
+    ctx.beginPath();
+    ctx.moveTo(g.x, g.y);
+
+    ctx.quadraticCurveTo(
+      g.x + Math.sin(Date.now() * 0.002) * g.sway,
+      g.y - g.height / 2,
+      g.x,
+      g.y - g.height
+    );
+
+    ctx.stroke();
+
+    g.y -= g.speed;
+    if (g.y < canvas.height - 80) {
+      g.y = canvas.height + Math.random() * 50;
+    }
+  });
+
+  /* ✨ FLOATING PARTICLES */
+  ctx.fillStyle = "rgba(0,255,150,0.6)";
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fill();
+
+    p.y -= p.speed;
+    if (p.y < 0) {
+      p.y = canvas.height;
+      p.x = Math.random() * canvas.width;
+    }
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+/* 💸 MONEY REACTION (OPTIONAL) */
+function reactToAmount(amount) {
+  const glow = document.getElementById("moneyGlow");
+  let intensity = Math.min(amount / 100, 1);
+  glow.style.boxShadow = `0 0 ${30 + intensity*80}px rgba(0,255,150,${0.5+intensity})`;
+}
+
+/* Resize */
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script>
+
+</body>
+</html>
