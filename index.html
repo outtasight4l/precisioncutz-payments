@@ -12,7 +12,9 @@
 <body>
 
   <div class="container">
-    <h1>PRECISION CUTZ</h1>
+
+    <!-- ✅ MUST MATCH EXACT CASE -->
+    <img src="ui.PNG" alt="UI" style="width:100%; max-width:400px;" />
 
     <div class="controls">
       <button onclick="openAI()">AI ASSISTANT</button>
@@ -20,6 +22,7 @@
     </div>
 
     <div id="output"></div>
+
   </div>
 
   <script src="app.js"></script>
@@ -28,7 +31,7 @@
   <script>
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("./service-worker.js")
-        .then(() => console.log("✅ Service Worker Registered"))
+        .then(() => console.log("✅ SW Registered"))
         .catch(err => console.log("SW Error:", err));
     }
   </script>
