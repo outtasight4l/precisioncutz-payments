@@ -1,13 +1,13 @@
 {
-  "name": "Precision Cutz Pay",
+  "name": "Precision Cutz",
   "short_name": "PC Pay",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#00ff88",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icon.png",
       "sizes": "192x192",
       "type": "image/png"
     }
