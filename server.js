@@ -6,7 +6,7 @@ const fetch = require("node-fetch");
 // ✅ ADD THIS
 const OpenAI = require("openai");
 const openai = new OpenAI({
-  apiKey: "YOUR_OPENAI_API_KEY"
+  apiKey: ak_7kki7q3_aNbFM5ZkP0AaJ6V8WGlGUf-r
 });
 
 const app = express();
