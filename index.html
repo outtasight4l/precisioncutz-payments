@@ -8,12 +8,12 @@
 body {
   margin: 0;
   background: #050505;
-  font-family: Arial, sans-serif;
+  font-family: 'Arial Black', sans-serif;
   color: #00ff66;
   text-align: center;
 }
 
-/* LOGO */
+/* TITLE */
 h1 {
   margin-top: 20px;
   font-size: 28px;
@@ -21,18 +21,31 @@ h1 {
 }
 
 /* DISPLAY BOX */
-#display {
+#displayBox {
   width: 85%;
   margin: 20px auto;
-  padding: 25px;
-  font-size: 50px;
+  padding: 20px;
   border: 2px solid #00ff66;
   border-radius: 15px;
   background: black;
-  color: #00ff66;
+  overflow: hidden;
+}
+
+/* PRICE TEXT */
+#display {
+  font-weight: 900;
   text-align: right;
   white-space: nowrap;
-  overflow: hidden;
+  font-size: 80px;
+  line-height: 1;
+  
+  /* GLOW EFFECT */
+  color: #00ff66;
+  text-shadow:
+    0 0 5px #00ff66,
+    0 0 10px #00ff66,
+    0 0 20px #00ff66,
+    0 0 40px #00ff66;
 }
 
 /* BUTTON ROW */
@@ -80,7 +93,9 @@ button {
 
 <h1>PRECISION CUTZ</h1>
 
-<div id="display">$0.00</div>
+<div id="displayBox">
+  <div id="display">$0.00</div>
+</div>
 
 <div class="actions">
   <button onclick="requestMoney()">REQUEST</button>
@@ -105,18 +120,34 @@ button {
 <script>
 let amount = 0;
 
-/* FORMAT DISPLAY LIKE REAL POS */
+/* AUTO FORMAT + AUTO RESIZE */
 function updateDisplay() {
   let dollars = (amount / 100).toFixed(2);
-  document.getElementById("display").innerText = "$" + dollars;
+  let display = document.getElementById("display");
+  display.innerText = "$" + dollars;
+
+  autoResize();
 }
 
-/* PRESS NUMBER (shifts cents like real payment apps) */
+/* DYNAMIC FONT SCALING */
+function autoResize() {
+  const display = document.getElementById("display");
+  const box = document.getElementById("displayBox");
+
+  let fontSize = 80;
+  display.style.fontSize = fontSize + "px";
+
+  while (display.scrollWidth > box.clientWidth - 20 && fontSize > 20) {
+    fontSize -= 2;
+    display.style.fontSize = fontSize + "px";
+  }
+}
+
+/* INPUT LOGIC (POS STYLE) */
 function press(num) {
   amount = amount * 10 + num;
 
-  // limit max size
-  if (amount > 999999999) amount = 999999999;
+  if (amount > 99999999999) amount = 99999999999;
 
   updateDisplay();
 }
@@ -127,13 +158,13 @@ function clearAll() {
   updateDisplay();
 }
 
-/* DELETE */
+/* BACKSPACE */
 function backspace() {
   amount = Math.floor(amount / 10);
   updateDisplay();
 }
 
-/* PAY BUTTON */
+/* PAY */
 function pay() {
   let value = (amount / 100).toFixed(2);
 
@@ -145,7 +176,7 @@ function pay() {
   window.location.href = `https://cash.app/$cryptogang85/${value}`;
 }
 
-/* REQUEST BUTTON */
+/* REQUEST */
 function requestMoney() {
   let value = (amount / 100).toFixed(2);
 
@@ -156,6 +187,9 @@ function requestMoney() {
 
   alert("Request sent for $" + value);
 }
+
+/* INIT */
+updateDisplay();
 </script>
 
 </body>
