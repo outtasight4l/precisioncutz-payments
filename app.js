@@ -1,47 +1,48 @@
-let value = "";
+let value = "0";
 
 function press(num) {
-    if (num === '.' && value.includes('.')) return;
+  if (num === "." && value.includes(".")) return;
+
+  if (value === "0" && num !== ".") {
+    value = num;
+  } else {
     value += num;
-    update();
+  }
+
+  update();
 }
 
-function clearAll() {
-    value = value.slice(0, -1);
-    update();
+function del() {
+  value = value.slice(0, -1);
+  if (value === "") value = "0";
+  update();
 }
 
 function update() {
-    let display = document.getElementById("price");
+  let display = document.getElementById("amount");
 
-    if (value === "") {
-        display.innerText = "0.00";
-        return;
-    }
+  let num = parseFloat(value);
+  if (isNaN(num)) num = 0;
 
-    let number = parseFloat(value);
-    if (isNaN(number)) number = 0;
+  let formatted = num.toFixed(2);
 
-    display.innerText = number.toFixed(2);
+  display.innerText = formatted;
 
-    autoFit(display);
+  // AUTO RESIZE TO NEVER OVERFLOW BOX
+  let size = 6;
+  if (formatted.length > 10) size = 5;
+  if (formatted.length > 14) size = 4;
+  if (formatted.length > 18) size = 3;
+
+  display.style.fontSize = size + "vw";
 }
 
-/* 🔥 AUTO FIT TEXT (REAL FIX) */
-function autoFit(el) {
-    let size = 60;
-    el.style.fontSize = size + "px";
+/* ACTION BUTTONS */
 
-    while (el.scrollWidth > el.clientWidth && size > 20) {
-        size--;
-        el.style.fontSize = size + "px";
-    }
+function requestPay() {
+  alert("Request Sent: $" + value);
 }
 
-function request() {
-    alert("Request sent: $" + document.getElementById("price").innerText);
-}
-
-function pay() {
-    alert("Processing payment: $" + document.getElementById("price").innerText);
+function payNow() {
+  alert("Payment Sent: $" + value);
 }
