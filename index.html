@@ -1,236 +1,35 @@
-// ==============================
-// 🧠 Efficiency Agent Module
-// ==============================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Precision Cutz</title>
 
-const EfficiencyAgent = (() => {
-  // ------------------------------
-  // 📍 Utilities
-  // ------------------------------
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-  function toRad(value) {
-    return (value * Math.PI) / 180;
-  }
+<body>
 
-  function getDistance(loc1, loc2) {
-    const R = 3958.8; // miles
+  <div class="container">
+    <h1>PRECISION CUTZ</h1>
 
-    const dLat = toRad(loc2.lat - loc1.lat);
-    const dLng = toRad(loc2.lng - loc1.lng);
+    <button onclick="openAI()">AI ASSISTANT</button>
+    <button onclick="scanQR()">SCAN QR</button>
 
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(toRad(loc1.lat)) *
-        Math.cos(toRad(loc2.lat)) *
-        Math.sin(dLng / 2) ** 2;
+    <div id="output"></div>
+  </div>
 
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  <script src="app.js"></script>
 
-    return R * c;
-  }
+  <!-- ✅ Service Worker -->
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./service-worker.js")
+        .then(() => console.log("✅ SW Registered"))
+        .catch(err => console.log("SW Error:", err));
+    }
+  </script>
 
-  // ------------------------------
-  // 🧮 Scoring Engine
-  // ------------------------------
-
-  function calculateJobScore(job, currentLocation) {
-    const distance = getDistance(currentLocation, job.location);
-
-    const profitPerHour = job.price / job.timeEstimate;
-
-    const tierWeight = {
-      VIP: 1.5,
-      Standard: 1.0,
-      Low: 0.7
-    };
-
-    const sentimentWeight = {
-      Good: 1.2,
-      Neutral: 1.0,
-      Bad: 0.6
-    };
-
-    const score =
-      (profitPerHour *
-        (tierWeight[job.clientTier] || 1) *
-        (sentimentWeight[job.sentiment] || 1)) /
-      (distance + 1);
-
-    return {
-      score,
-      distance,
-      profitPerHour
-    };
-  }
-
-  // ------------------------------
-  // 🔄 Optimization Engine
-  // ------------------------------
-
-  function optimizeRoute(jobs, currentLocation) {
-    return jobs
-      .filter(job => job.status === "pending")
-      .map(job => {
-        const metrics = calculateJobScore(job, currentLocation);
-
-        return {
-          ...job,
-          ...metrics
-        };
-      })
-      .sort((a, b) => b.score - a.score);
-  }
-
-  // ------------------------------
-  // 💡 Insight Engine
-  // ------------------------------
-
-  function generateInsight(jobs) {
-    if (!jobs.length) return "No pending jobs.";
-
-    const totalRevenue = jobs.reduce((sum, j) => sum + j.price, 0);
-
-    const avgDistance =
-      jobs.reduce((sum, j) => sum + j.distance, 0) / jobs.length;
-
-    const avgProfitPerHour =
-      jobs.reduce((sum, j) => sum + j.profitPerHour, 0) / jobs.length;
-
-    return `
-Optimized Revenue: $${totalRevenue}
-Avg Distance: ${avgDistance.toFixed(1)} mi
-Avg $/hr: ${avgProfitPerHour.toFixed(2)}
-Focus: High-efficiency route
-    `.trim();
-  }
-
-  // ------------------------------
-  // 🧭 Decision Engine
-  // ------------------------------
-
-  function getEfficiencyPlan(jobs, currentLocation, options = {}) {
-    const { topN = 3 } = options;
-
-    const optimized = optimizeRoute(jobs, currentLocation);
-
-    const topJobs = optimized.slice(0, topN);
-
-    return {
-      recommendation: `Execute top ${topN} jobs for max efficiency`,
-      jobs: topJobs,
-      insight: generateInsight(topJobs),
-      fullRanking: optimized
-    };
-  }
-
-  // ------------------------------
-  // 📊 Optional: Client Tier Auto-Detection (CLV)
-  // ------------------------------
-
-  function assignClientTiers(jobs) {
-    const totals = {};
-
-    jobs.forEach(job => {
-      if (!totals[job.clientName]) totals[job.clientName] = 0;
-      totals[job.clientName] += job.price;
-    });
-
-    const values = Object.values(totals).sort((a, b) => b - a);
-
-    const topThreshold = values[Math.floor(values.length * 0.1)] || 0;
-
-    return jobs.map(job => {
-      let tier = "Standard";
-
-      if (totals[job.clientName] >= topThreshold) {
-        tier = "VIP";
-      } else if (totals[job.clientName] < topThreshold * 0.5) {
-        tier = "Low";
-      }
-
-      return {
-        ...job,
-        clientTier: job.clientTier || tier
-      };
-    });
-  }
-
-  // ------------------------------
-  // 🌦️ Optional: Weather Penalty Hook
-  // ------------------------------
-
-  function applyWeatherImpact(jobs, weather) {
-    if (!weather) return jobs;
-
-    return jobs.map(job => {
-      let weatherPenalty = 1;
-
-      if (weather === "rain") {
-        weatherPenalty = job.distance > 3 ? 0.7 : 0.9;
-      }
-
-      return {
-        ...job,
-        weatherAdjustedScore: job.score * weatherPenalty
-      };
-    });
-  }
-
-  // ------------------------------
-  // 🚀 Public API
-  // ------------------------------
-
-  return {
-    getEfficiencyPlan,
-    optimizeRoute,
-    calculateJobScore,
-    assignClientTiers,
-    applyWeatherImpact
-  };
-})();
-
-// ==============================
-// 🧪 Example Usage
-// ==============================
-
-const jobs = [
-  {
-    id: "1",
-    clientName: "Client A",
-    location: { lat: 36.53, lng: -87.36 },
-    price: 75,
-    timeEstimate: 1.5,
-    sentiment: "Good",
-    status: "pending"
-  },
-  {
-    id: "2",
-    clientName: "Client B",
-    location: { lat: 36.55, lng: -87.30 },
-    price: 60,
-    timeEstimate: 1.2,
-    sentiment: "Neutral",
-    status: "pending"
-  },
-  {
-    id: "3",
-    clientName: "Client C",
-    location: { lat: 36.50, lng: -87.40 },
-    price: 90,
-    timeEstimate: 2,
-    sentiment: "Good",
-    status: "pending"
-  }
-];
-
-const currentLocation = { lat: 36.5298, lng: -87.3595 };
-
-// Auto-assign tiers (optional)
-const enrichedJobs = EfficiencyAgent.assignClientTiers(jobs);
-
-// Get plan
-const plan = EfficiencyAgent.getEfficiencyPlan(enrichedJobs, currentLocation);
-
-console.log("=== Efficiency Plan ===");
-console.log(plan.recommendation);
-console.table(plan.jobs);
-console.log(plan.insight);
+</body>
+</html>
