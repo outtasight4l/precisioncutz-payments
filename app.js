@@ -1,3 +1,25 @@
+// AUTO LOAD IMAGE (handles PNG / png issues)
+const img = document.getElementById("uiImage");
+
+const possibleNames = [
+  "ui.png",
+  "ui.PNG",
+  "Ui.png",
+  "UI.PNG"
+];
+
+function loadImage(index = 0) {
+  if (index >= possibleNames.length) {
+    console.error("UI image not found.");
+    return;
+  }
+
+  img.src = possibleNames[index];
+
+  img.onerror = () => loadImage(index + 1);
+}
+
+loadImage();
 let value = "0";
 
 function press(num) {
