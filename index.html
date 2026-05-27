@@ -1,232 +1,236 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Precision Cutz Pay</title>
+// ==============================
+// 🧠 Efficiency Agent Module
+// ==============================
 
-<style>
-body {
-  margin: 0;
-  background: black;
-  font-family: Arial, sans-serif;
-}
+const EfficiencyAgent = (() => {
+  // ------------------------------
+  // 📍 Utilities
+  // ------------------------------
 
-.container {
-  position: relative;
-  max-width: 420px;
-  margin: auto;
-}
+  function toRad(value) {
+    return (value * Math.PI) / 180;
+  }
 
-/* UI IMAGE */
-.ui {
-  width: 100%;
-  display: block;
-}
+  function getDistance(loc1, loc2) {
+    const R = 3958.8; // miles
 
-/* CLICK AREAS */
-.tap {
-  position: absolute;
-}
+    const dLat = toRad(loc2.lat - loc1.lat);
+    const dLng = toRad(loc2.lng - loc1.lng);
 
-/* QR */
-.qr {
-  top: 5%;
-  left: 5%;
-  width: 20%;
-  height: 12%;
-}
+    const a =
+      Math.sin(dLat / 2) ** 2 +
+      Math.cos(toRad(loc1.lat)) *
+        Math.cos(toRad(loc2.lat)) *
+        Math.sin(dLng / 2) ** 2;
 
-/* AI */
-.ai {
-  top: 5%;
-  right: 5%;
-  width: 20%;
-  height: 12%;
-}
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-/* REQUEST */
-.request {
-  top: 48%;
-  left: 8%;
-  width: 36%;
-  height: 8%;
-}
+    return R * c;
+  }
 
-/* PAY */
-.pay {
-  top: 48%;
-  right: 8%;
-  width: 36%;
-  height: 8%;
-}
+  // ------------------------------
+  // 🧮 Scoring Engine
+  // ------------------------------
 
-/* AMOUNT DISPLAY */
-.amount {
-  position: absolute;
-  top: 36%;
-  left: 18%;
-  width: 64%;
-  height: 8%;
-  color: #00ff99;
-  font-size: 28px;
-  display: flex;
-  align-items: center;
-  padding-left: 12px;
-  overflow: hidden;
-}
+  function calculateJobScore(job, currentLocation) {
+    const distance = getDistance(currentLocation, job.location);
 
-/* NUMBER GRID (invisible tap zones) */
-.keypad {
-  position: absolute;
-  bottom: 5%;
-  width: 100%;
-  height: 35%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
+    const profitPerHour = job.price / job.timeEstimate;
 
-/* each key */
-.key {
-  width: 100%;
-  height: 100%;
-}
-</style>
-</head>
+    const tierWeight = {
+      VIP: 1.5,
+      Standard: 1.0,
+      Low: 0.7
+    };
 
-<body>
+    const sentimentWeight = {
+      Good: 1.2,
+      Neutral: 1.0,
+      Bad: 0.6
+    };
 
-<div class="container">
+    const score =
+      (profitPerHour *
+        (tierWeight[job.clientTier] || 1) *
+        (sentimentWeight[job.sentiment] || 1)) /
+      (distance + 1);
 
-  <!-- UI IMAGE -->
-  <img src="ui.PNG" class="ui">
+    return {
+      score,
+      distance,
+      profitPerHour
+    };
+  }
 
-  <!-- TAP AREAS -->
-  <div class="tap qr" onclick="openQR()"></div>
-  <div class="tap ai" onclick="openAI()"></div>
-  <div class="tap request" onclick="requestMoney()"></div>
-  <div class="tap pay" onclick="payNow()"></div>
+  // ------------------------------
+  // 🔄 Optimization Engine
+  // ------------------------------
 
-  <!-- AMOUNT -->
-  <div class="amount" id="amount">$0.00</div>
+  function optimizeRoute(jobs, currentLocation) {
+    return jobs
+      .filter(job => job.status === "pending")
+      .map(job => {
+        const metrics = calculateJobScore(job, currentLocation);
 
-  <!-- KEYPAD -->
-  <div class="keypad">
-    <div class="key" onclick="press(1)"></div>
-    <div class="key" onclick="press(2)"></div>
-    <div class="key" onclick="press(3)"></div>
-    <div class="key" onclick="press(4)"></div>
-    <div class="key" onclick="press(5)"></div>
-    <div class="key" onclick="press(6)"></div>
-    <div class="key" onclick="press(7)"></div>
-    <div class="key" onclick="press(8)"></div>
-    <div class="key" onclick="press(9)"></div>
-    <div class="key" onclick="press('.')"></div>
-    <div class="key" onclick="press(0)"></div>
-    <div class="key" onclick="clearAmount()"></div>
-  </div>
+        return {
+          ...job,
+          ...metrics
+        };
+      })
+      .sort((a, b) => b.score - a.score);
+  }
 
-</div>
+  // ------------------------------
+  // 💡 Insight Engine
+  // ------------------------------
 
-<script>
-let value = "";
+  function generateInsight(jobs) {
+    if (!jobs.length) return "No pending jobs.";
 
-/* ======================
-   NUMBER INPUT
-====================== */
-function press(num) {
-  if (num === '.' && value.includes('.')) return;
-  value += num;
-  updateDisplay();
-}
+    const totalRevenue = jobs.reduce((sum, j) => sum + j.price, 0);
 
-function clearAmount() {
-  value = "";
-  updateDisplay();
-}
+    const avgDistance =
+      jobs.reduce((sum, j) => sum + j.distance, 0) / jobs.length;
 
-function updateDisplay() {
-  let formatted = parseFloat(value || 0).toFixed(2);
-  document.getElementById("amount").innerText = "$ " + formatted;
-}
+    const avgProfitPerHour =
+      jobs.reduce((sum, j) => sum + j.profitPerHour, 0) / jobs.length;
 
-/* ======================
-   AI ASSISTANT (WORKING)
-====================== */
-async function openAI() {
-  const message = prompt("Ask AI Assistant:");
+    return `
+Optimized Revenue: $${totalRevenue}
+Avg Distance: ${avgDistance.toFixed(1)} mi
+Avg $/hr: ${avgProfitPerHour.toFixed(2)}
+Focus: High-efficiency route
+    `.trim();
+  }
 
-  if (!message) return;
+  // ------------------------------
+  // 🧭 Decision Engine
+  // ------------------------------
 
-  try {
-    const res = await fetch("https://precisioncutz-api.onrender.com/ai", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: message })
+  function getEfficiencyPlan(jobs, currentLocation, options = {}) {
+    const { topN = 3 } = options;
+
+    const optimized = optimizeRoute(jobs, currentLocation);
+
+    const topJobs = optimized.slice(0, topN);
+
+    return {
+      recommendation: `Execute top ${topN} jobs for max efficiency`,
+      jobs: topJobs,
+      insight: generateInsight(topJobs),
+      fullRanking: optimized
+    };
+  }
+
+  // ------------------------------
+  // 📊 Optional: Client Tier Auto-Detection (CLV)
+  // ------------------------------
+
+  function assignClientTiers(jobs) {
+    const totals = {};
+
+    jobs.forEach(job => {
+      if (!totals[job.clientName]) totals[job.clientName] = 0;
+      totals[job.clientName] += job.price;
     });
 
-    const data = await res.json();
+    const values = Object.values(totals).sort((a, b) => b - a);
 
-    alert(data.reply || "No response from AI");
+    const topThreshold = values[Math.floor(values.length * 0.1)] || 0;
 
-  } catch (err) {
-    alert("AI error: " + err.message);
-  }
-}
+    return jobs.map(job => {
+      let tier = "Standard";
 
-/* ======================
-   QR (placeholder)
-====================== */
-function openQR() {
-  alert("QR Scanner coming next");
-}
+      if (totals[job.clientName] >= topThreshold) {
+        tier = "VIP";
+      } else if (totals[job.clientName] < topThreshold * 0.5) {
+        tier = "Low";
+      }
 
-/* ======================
-   REQUEST
-====================== */
-function requestMoney() {
-  if (!value) {
-    alert("Enter amount first");
-    return;
-  }
-  alert("Request sent: $" + value);
-}
-
-/* ======================
-   STRIPE PAYMENT
-====================== */
-async function payNow() {
-  const amount = parseFloat(value);
-
-  if (!amount || amount <= 0) {
-    alert("Enter amount first");
-    return;
-  }
-
-  try {
-    const res = await fetch("https://precisioncutz-api.onrender.com/create-payment", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ amount })
+      return {
+        ...job,
+        clientTier: job.clientTier || tier
+      };
     });
-
-    const data = await res.json();
-
-    if (data.id) {
-      window.location.href = "https://checkout.stripe.com/pay/" + data.id;
-    } else {
-      alert("Payment error");
-    }
-
-  } catch (err) {
-    alert("Payment failed: " + err.message);
   }
-}
-</script>
 
-</body>
-</html>
+  // ------------------------------
+  // 🌦️ Optional: Weather Penalty Hook
+  // ------------------------------
+
+  function applyWeatherImpact(jobs, weather) {
+    if (!weather) return jobs;
+
+    return jobs.map(job => {
+      let weatherPenalty = 1;
+
+      if (weather === "rain") {
+        weatherPenalty = job.distance > 3 ? 0.7 : 0.9;
+      }
+
+      return {
+        ...job,
+        weatherAdjustedScore: job.score * weatherPenalty
+      };
+    });
+  }
+
+  // ------------------------------
+  // 🚀 Public API
+  // ------------------------------
+
+  return {
+    getEfficiencyPlan,
+    optimizeRoute,
+    calculateJobScore,
+    assignClientTiers,
+    applyWeatherImpact
+  };
+})();
+
+// ==============================
+// 🧪 Example Usage
+// ==============================
+
+const jobs = [
+  {
+    id: "1",
+    clientName: "Client A",
+    location: { lat: 36.53, lng: -87.36 },
+    price: 75,
+    timeEstimate: 1.5,
+    sentiment: "Good",
+    status: "pending"
+  },
+  {
+    id: "2",
+    clientName: "Client B",
+    location: { lat: 36.55, lng: -87.30 },
+    price: 60,
+    timeEstimate: 1.2,
+    sentiment: "Neutral",
+    status: "pending"
+  },
+  {
+    id: "3",
+    clientName: "Client C",
+    location: { lat: 36.50, lng: -87.40 },
+    price: 90,
+    timeEstimate: 2,
+    sentiment: "Good",
+    status: "pending"
+  }
+];
+
+const currentLocation = { lat: 36.5298, lng: -87.3595 };
+
+// Auto-assign tiers (optional)
+const enrichedJobs = EfficiencyAgent.assignClientTiers(jobs);
+
+// Get plan
+const plan = EfficiencyAgent.getEfficiencyPlan(enrichedJobs, currentLocation);
+
+console.log("=== Efficiency Plan ===");
+console.log(plan.recommendation);
+console.table(plan.jobs);
+console.log(plan.insight);
