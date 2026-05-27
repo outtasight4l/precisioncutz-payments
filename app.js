@@ -1,70 +1,61 @@
-let input = "";
-
-// ==============================
-// 🔢 INPUT
-// ==============================
-function press(value) {
-  input += value;
-  updateDisplay();
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("overlay").classList.toggle("show");
 }
 
-function clearInput() {
-  input = "";
-  updateDisplay();
+function closeSidebar() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("overlay").classList.remove("show");
 }
 
-function updateDisplay() {
-  document.getElementById("display").innerText = input || "0";
+/* ===== NAVIGATION ===== */
+
+function goHome() {
+  alert("Home");
+  closeSidebar();
 }
 
-// ==============================
-// 💰 NOWPAYMENTS XRP PAY
-// ==============================
-async function payNow() {
-  if (!input) {
-    alert("Enter amount");
-    return;
-  }
-
-  try {
-    const res = await fetch("https://api.nowpayments.io/v1/invoice", {
-      method: "POST",
-      headers: {
-        "x-api-key": "REPLACE_WITH_YOUR_API_KEY",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        price_amount: parseFloat(input),
-        price_currency: "usd",
-        pay_currency: "xrp"
-      })
-    });
-
-    const data = await res.json();
-
-    if (data.invoice_url) {
-      window.location.href = data.invoice_url;
-    } else {
-      console.log(data);
-      alert("Payment failed");
-    }
-
-  } catch (err) {
-    console.error(err);
-    alert("Connection error");
-  }
+function openPayments() {
+  window.open("https://nowpayments.io/payment/?iid=6386319463", "_blank");
+  closeSidebar();
 }
 
-// ==============================
-// 🤖 AI
-// ==============================
-function openAI() {
-  alert("AI Assistant coming next");
+function openReceipts() {
+  alert("Receipts page");
+  closeSidebar();
 }
 
-// ==============================
-// 📷 QR
-// ==============================
-function scanQR() {
-  alert("QR Scanner coming next");
+function openCustomers() {
+  alert("Customers page");
+  closeSidebar();
+}
+
+function openWallet() {
+  alert("Wallet page");
+  closeSidebar();
+}
+
+function openAnalytics() {
+  alert("Analytics page");
+  closeSidebar();
+}
+
+function openRoutes() {
+  alert("Routes page");
+  closeSidebar();
+}
+
+function openSettings() {
+  alert("Settings page");
+  closeSidebar();
+}
+
+function openSupport() {
+  alert("Support");
+  closeSidebar();
+}
+
+function logout() {
+  alert("Logged out");
+  closeSidebar();
 }
