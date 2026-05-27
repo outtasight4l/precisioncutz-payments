@@ -11,38 +11,38 @@
 
 <div class="app">
 
-  <!-- BACKGROUND UI -->
-  <img src="ui.png" class="ui-bg">
+  <!-- BACKGROUND UI (AUTO LOAD FIX) -->
+  <img id="uiImage" class="ui-bg">
 
   <!-- AMOUNT DISPLAY -->
   <div class="amount-wrapper">
-    <span class="dollar">$</span>
+    <div class="dollar">$</div>
     <div id="amount">0.00</div>
   </div>
 
-  <!-- INVISIBLE TOUCH LAYER -->
+  <!-- INVISIBLE BUTTON LAYER -->
   <div class="touch-layer">
 
-    <!-- NUMBER GRID -->
-    <button onclick="press('1')" class="b b1"></button>
-    <button onclick="press('2')" class="b b2"></button>
-    <button onclick="press('3')" class="b b3"></button>
+    <!-- NUMBERS -->
+    <button class="btn b1" onclick="press('1')"></button>
+    <button class="btn b2" onclick="press('2')"></button>
+    <button class="btn b3" onclick="press('3')"></button>
 
-    <button onclick="press('4')" class="b b4"></button>
-    <button onclick="press('5')" class="b b5"></button>
-    <button onclick="press('6')" class="b b6"></button>
+    <button class="btn b4" onclick="press('4')"></button>
+    <button class="btn b5" onclick="press('5')"></button>
+    <button class="btn b6" onclick="press('6')"></button>
 
-    <button onclick="press('7')" class="b b7"></button>
-    <button onclick="press('8')" class="b b8"></button>
-    <button onclick="press('9')" class="b b9"></button>
+    <button class="btn b7" onclick="press('7')"></button>
+    <button class="btn b8" onclick="press('8')"></button>
+    <button class="btn b9" onclick="press('9')"></button>
 
-    <button onclick="press('.')" class="b bdot"></button>
-    <button onclick="press('0')" class="b b0"></button>
-    <button onclick="del()" class="b bdel"></button>
+    <button class="btn bdot" onclick="press('.')"></button>
+    <button class="btn b0" onclick="press('0')"></button>
+    <button class="btn bdel" onclick="del()"></button>
 
-    <!-- ACTION BUTTONS -->
-    <button onclick="requestPay()" class="action request"></button>
-    <button onclick="payNow()" class="action pay"></button>
+    <!-- ACTIONS -->
+    <button class="action request" onclick="requestPay()"></button>
+    <button class="action pay" onclick="payNow()"></button>
 
   </div>
 
