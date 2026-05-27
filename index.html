@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Precision Cutz</title>
 <link rel="stylesheet" href="style.css">
@@ -10,39 +11,60 @@
 
 <div class="app">
 
-  <!-- IMAGE -->
-  <img src="ui.PNG?v=1" class="ui">
+  <!-- UI BACKGROUND -->
+  <img src="ui.PNG" class="ui">
 
-  <!-- BUTTON OVERLAYS -->
-  <button class="btn qr" onclick="openQR()"></button>
-  <button class="btn ai" onclick="openAI()"></button>
-  <button class="btn request" onclick="requestMoney()"></button>
-  <button class="btn pay" onclick="payMoney()"></button>
+  <!-- CLICK ZONES -->
+  <div class="btn qr" onclick="openQR()"></div>
+  <div class="btn ai" onclick="openAI()"></div>
 
-  <!-- DISPLAY -->
-  <div id="display" class="display">$0.00</div>
+  <div class="btn request" onclick="requestMoney()"></div>
+  <div class="btn pay" onclick="payMoney()"></div>
+
+  <!-- AMOUNT -->
+  <div id="amount" class="amount">$0.00</div>
 
   <!-- KEYPAD -->
   <div class="keypad">
-    <button onclick="press('1')"></button>
-    <button onclick="press('2')"></button>
-    <button onclick="press('3')"></button>
+    <button onclick="press(1)">1</button>
+    <button onclick="press(2)">2</button>
+    <button onclick="press(3)">3</button>
 
-    <button onclick="press('4')"></button>
-    <button onclick="press('5')"></button>
-    <button onclick="press('6')"></button>
+    <button onclick="press(4)">4</button>
+    <button onclick="press(5)">5</button>
+    <button onclick="press(6)">6</button>
 
-    <button onclick="press('7')"></button>
-    <button onclick="press('8')"></button>
-    <button onclick="press('9')"></button>
+    <button onclick="press(7)">7</button>
+    <button onclick="press(8)">8</button>
+    <button onclick="press(9)">9</button>
 
-    <button onclick="press('.')"></button>
-    <button onclick="press('0')"></button>
-    <button onclick="clearDisplay()"></button>
+    <button onclick="dot()">.</button>
+    <button onclick="press(0)">0</button>
+    <button onclick="clearLast()">⌫</button>
   </div>
 
 </div>
 
-<script src="script.js"></script>
+<!-- AI CHAT MODAL -->
+<div id="chatModal" class="chat-modal">
+  <div class="chat-box">
+
+    <div class="chat-header">
+      AI Assistant
+      <button onclick="closeAI()">X</button>
+    </div>
+
+    <div id="chatMessages" class="chat-messages"></div>
+
+    <div class="chat-input">
+      <input id="userInput" placeholder="Ask anything..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="app.js"></script>
+
 </body>
 </html>
