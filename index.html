@@ -1,70 +1,224 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Precision Cutz</title>
+<title>Precision Cutz Pay</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+body {
+  margin: 0;
+  background: black;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
 
-<script src="https://js.stripe.com/v3/"></script>
-<script src="https://unpkg.com/html5-qrcode"></script>
+/* UI IMAGE */
+.container {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+}
+
+.ui {
+  width: 100%;
+  display: block;
+}
+
+/* CLICK AREAS */
+.tap {
+  position: absolute;
+}
+
+/* QR BUTTON */
+.qr {
+  top: 6%;
+  left: 6%;
+  width: 20%;
+  height: 12%;
+}
+
+/* AI BUTTON */
+.ai {
+  top: 6%;
+  right: 6%;
+  width: 20%;
+  height: 12%;
+}
+
+/* REQUEST BUTTON */
+.request {
+  top: 48%;
+  left: 8%;
+  width: 36%;
+  height: 8%;
+}
+
+/* PAY BUTTON */
+.pay {
+  top: 48%;
+  right: 8%;
+  width: 36%;
+  height: 8%;
+}
+
+/* AMOUNT DISPLAY */
+.amount {
+  position: absolute;
+  top: 36%;
+  left: 18%;
+  width: 64%;
+  height: 8%;
+  color: #00ff99;
+  font-size: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 10px;
+  overflow: hidden;
+}
+
+/* NUMBER GRID */
+.numbers {
+  position: absolute;
+  bottom: 5%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 0 40px;
+}
+
+.num {
+  color: #00ff99;
+  font-size: 28px;
+  text-align: center;
+}
+
+/* HIDDEN BUTTONS FOR GRID CLICK */
+.num-btn {
+  position: absolute;
+}
+</style>
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
 
-<img src="ui.PNG" class="ui">
+  <!-- UI IMAGE -->
+  <img src="ui.PNG" class="ui">
 
-<div class="btn qr" onclick="openQR()"></div>
-<div class="btn ai" onclick="openAI()"></div>
+  <!-- CLICK ZONES -->
+  <div class="tap qr" onclick="openQR()"></div>
+  <div class="tap ai" onclick="openAI()"></div>
+  <div class="tap request" onclick="requestMoney()"></div>
+  <div class="tap pay" onclick="payNow()"></div>
 
-<div class="btn request" onclick="requestMoney()"></div>
-<div class="btn pay" onclick="payMoney()"></div>
-
-<div id="amount" class="amount">$0.00</div>
-
-<div class="keypad">
-<button onclick="press(1)">1</button>
-<button onclick="press(2)">2</button>
-<button onclick="press(3)">3</button>
-
-<button onclick="press(4)">4</button>
-<button onclick="press(5)">5</button>
-<button onclick="press(6)">6</button>
-
-<button onclick="press(7)">7</button>
-<button onclick="press(8)">8</button>
-<button onclick="press(9)">9</button>
-
-<button onclick="dot()">.</button>
-<button onclick="press(0)">0</button>
-<button onclick="clearLast()">⌫</button>
-</div>
+  <!-- AMOUNT -->
+  <div class="amount" id="amount">$0.00</div>
 
 </div>
 
-<!-- AI -->
-<div id="chatModal" class="modal">
-<div class="box">
-<div class="header">AI Assistant <button onclick="closeAI()">X</button></div>
-<div id="chatMessages" class="messages"></div>
-<div class="input">
-<input id="userInput">
-<button onclick="sendMessage()">Send</button>
-</div>
-</div>
-</div>
+<script>
+let value = "";
 
-<!-- QR -->
-<div id="qrModal" class="modal">
-<div class="box">
-<div class="header">Scan QR <button onclick="closeQR()">X</button></div>
-<div id="qr-reader" style="width:100%"></div>
-</div>
-</div>
+/* ======================
+   NUMBER INPUT HANDLER
+====================== */
+document.addEventListener("click", function(e) {
+  const x = e.clientX;
+  const y = e.clientY;
+  const h = window.innerHeight;
 
-<script src="app.js"></script>
+  // bottom keypad area only
+  if (y > h * 0.60) {
+    handleNumberClick(x, y);
+  }
+});
+
+function handleNumberClick(x, y) {
+  const width = window.innerWidth;
+  const col = Math.floor((x / width) * 3);
+
+  let num = "";
+
+  if (col === 0) num = "1";
+  if (col === 1) num = "2";
+  if (col === 2) num = "3";
+
+  value += num;
+  updateDisplay();
+}
+
+/* ======================
+   UPDATE DISPLAY
+====================== */
+function updateDisplay() {
+  let formatted = parseFloat(value || 0).toFixed(2);
+  document.getElementById("amount").innerText = "$ " + formatted;
+}
+
+/* ======================
+   AI ASSISTANT
+====================== */
+async function openAI() {
+  const message = prompt("Ask AI Assistant:");
+
+  if (!message) return;
+
+  const res = await fetch("https://YOUR-BACKEND-URL/ai", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message })
+  });
+
+  const data = await res.json();
+
+  alert(data.reply);
+}
+
+/* ======================
+   QR SCANNER
+====================== */
+function openQR() {
+  alert("QR Scanner opening (connect camera library next)");
+}
+
+/* ======================
+   REQUEST
+====================== */
+function requestMoney() {
+  alert("Request sent: $" + value);
+}
+
+/* ======================
+   STRIPE PAYMENT
+====================== */
+async function payNow() {
+  const amount = parseFloat(value);
+
+  if (!amount || amount <= 0) {
+    alert("Enter amount first");
+    return;
+  }
+
+  const res = await fetch("https://YOUR-BACKEND-URL/create-payment", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ amount })
+  });
+
+  const data = await res.json();
+
+  window.location.href = "https://checkout.stripe.com/pay/" + data.id;
+}
+</script>
 
 </body>
 </html>
