@@ -1,13 +1,31 @@
 const express = require("express");
-const path = require("path");
+const stripe = require("stripe")("YOUR_SECRET_KEY");
+const cors = require("cors");
 
 const app = express();
 
-app.use(express.static("public"));
+app.use(cors());
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/index.html"));
+app.post("/create-payment", async (req, res) => {
+
+const session = await stripe.checkout.sessions.create({
+payment_method_types: ["card"],
+line_items: [{
+price_data: {
+currency: "usd",
+product_data: { name: "Lawn Service" },
+unit_amount: req.body.amount
+},
+quantity: 1
+}],
+mode: "payment",
+success_url: "https://your-site.com",
+cancel_url: "https://your-site.com"
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log("Server running on port " + PORT));
+res.json({ id: session.id });
+
+});
+
+app.listen(3000);
