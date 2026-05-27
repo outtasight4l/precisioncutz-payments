@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Precision Cutz</title>
 
 <style>
@@ -10,7 +11,7 @@ body {
   background:black;
 }
 
-/* UI IMAGE */
+/* UI */
 .ui {
   position:relative;
   width:100%;
@@ -20,10 +21,9 @@ body {
 
 .ui img {
   width:100%;
-  display:block;
 }
 
-/* PRICE DISPLAY */
+/* PRICE (AUTO FIT) */
 #price {
   position:absolute;
   top:34%;
@@ -31,7 +31,6 @@ body {
   width:70%;
   text-align:right;
 
-  font-size:60px;
   font-weight:bold;
   color:#00ff66;
 
@@ -39,21 +38,22 @@ body {
     0 0 10px #00ff66,
     0 0 30px #00ff66,
     0 0 60px #00ff66;
+
+  white-space:nowrap;
 }
 
-/* INVISIBLE BUTTONS */
+/* BUTTONS */
 .btn {
   position:absolute;
   border-radius:15px;
 }
 
-/* TAP EFFECT */
 .btn:active {
-  transform:scale(0.9);
-  box-shadow:0 0 20px #00ff66 inset;
+  transform:scale(0.92);
+  box-shadow:0 0 25px #00ff66 inset;
 }
 
-/* KEYPAD (PIXEL LOCKED) */
+/* KEYPAD */
 .key { width:26%; height:9%; }
 
 .k1 {top:56%; left:7%;}
@@ -72,40 +72,50 @@ body {
 .k0 {top:86%; left:37%;}
 .kB {top:86%; left:67%;}
 
-/* TOP ICONS */
+/* TOP */
 .qr {top:4%; left:5%; width:13%; height:9%;}
 .ai {top:4%; right:5%; width:13%; height:9%;}
 .heart {top:4%; right:25%; width:13%; height:9%;}
 
-/* QR MODAL */
-#qrModal {
+/* NEON MODAL */
+.modal {
   position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.95);
   display:none;
   justify-content:center;
   align-items:center;
+  background:rgba(0,0,0,0.9);
 }
 
-#qrModal img {
-  width:85%;
-  max-width:350px;
-  border-radius:20px;
+.modal-box {
+  width:80%;
+  max-width:300px;
+  padding:20px;
+  border-radius:15px;
+  border:2px solid #00ff66;
   box-shadow:0 0 30px #00ff66;
+  text-align:center;
+  color:#00ff66;
+  background:black;
+  animation:fadeIn 0.3s ease;
 }
 
-/* HEART ANIMATION */
-.pulse {
-  animation:pulse 1s infinite;
+@keyframes fadeIn {
+  from {opacity:0; transform:scale(0.8);}
+  to {opacity:1; transform:scale(1);}
 }
 
-@keyframes pulse {
-  0% { box-shadow:0 0 5px #00ff66; }
-  50% { box-shadow:0 0 25px #00ff66; }
-  100% { box-shadow:0 0 5px #00ff66; }
+.modal button {
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  border-radius:10px;
+  background:#00ff66;
+  color:black;
+  font-weight:bold;
 }
 </style>
 </head>
@@ -113,7 +123,6 @@ body {
 <body>
 
 <div class="ui">
-  <!-- YOUR REAL UI -->
   <img src="ui.PNG">
 
   <!-- PRICE -->
@@ -138,21 +147,38 @@ body {
 
   <!-- TOP -->
   <div class="btn qr" onclick="openQR()"></div>
-  <div class="btn ai" onclick="aiMode()"></div>
+  <div class="btn ai" onclick="openAI()"></div>
   <div class="btn heart" onclick="heartbeat(this)"></div>
 </div>
 
-<!-- QR POPUP -->
-<div id="qrModal" onclick="closeQR()">
-  <img src="ui.PNG" onclick="payFromQR(event)">
+<!-- AI MODAL -->
+<div class="modal" id="aiModal">
+  <div class="modal-box">
+    🤖 AI SYSTEM  
+    <br><br>
+    Voice control & automation coming next
+    <br>
+    <button onclick="closeAI()">Close</button>
+  </div>
 </div>
 
 <script>
 let amount = 0;
 
 function update(){
-  document.getElementById("price").innerText =
-    "$" + (amount/100).toFixed(2);
+  let text = "$" + (amount/100).toFixed(2);
+  let el = document.getElementById("price");
+
+  el.innerText = text;
+
+  // AUTO FIT
+  let size = 70;
+  el.style.fontSize = size + "px";
+
+  while (el.scrollWidth > el.parentElement.clientWidth * 0.7 && size > 25) {
+    size -= 2;
+    el.style.fontSize = size + "px";
+  }
 }
 
 /* INPUT */
@@ -171,29 +197,24 @@ function backspace(){
   update();
 }
 
-/* QR */
-function openQR(){
-  document.getElementById("qrModal").style.display = "flex";
+/* AI MODAL */
+function openAI(){
+  document.getElementById("aiModal").style.display = "flex";
 }
 
-function closeQR(){
-  document.getElementById("qrModal").style.display = "none";
-}
-
-function payFromQR(e){
-  e.stopPropagation();
-  let v = (amount/100).toFixed(2);
-  window.location.href = `https://cash.app/$cryptogang85/${v}`;
+function closeAI(){
+  document.getElementById("aiModal").style.display = "none";
 }
 
 /* HEART */
 function heartbeat(el){
-  el.classList.toggle("pulse");
+  el.style.boxShadow = "0 0 30px #00ff66";
+  setTimeout(()=> el.style.boxShadow = "", 500);
 }
 
-/* AI */
-function aiMode(){
-  alert("AI system coming next");
+/* QR */
+function openQR(){
+  window.location.href = "https://cash.app/$cryptogang85";
 }
 
 update();
