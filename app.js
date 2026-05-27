@@ -1,61 +1,70 @@
-function toggleSidebar() {
-  document.getElementById("sidebar").classList.toggle("open");
-  document.getElementById("overlay").classList.toggle("show");
+let input = document.getElementById("amount");
+
+/* SPLASH */
+window.onload = () => {
+  setTimeout(() => {
+    document.getElementById("splash").classList.add("fade-out");
+  }, 1800);
+};
+
+/* KEYPAD */
+function press(num) {
+  input.value += num;
 }
 
-function closeSidebar() {
+function clearInput() {
+  input.value = input.value.slice(0, -1);
+}
+
+/* SIDEBAR */
+function openMenu() {
+  document.getElementById("sidebar").classList.add("open");
+  document.getElementById("overlay").classList.add("active");
+}
+
+function closeMenu() {
   document.getElementById("sidebar").classList.remove("open");
-  document.getElementById("overlay").classList.remove("show");
+  document.getElementById("overlay").classList.remove("active");
 }
 
-/* ===== NAVIGATION ===== */
+/* NAV */
+function openProfile() {
+  window.location.href = "profile.html";
+}
 
 function goHome() {
-  alert("Home");
-  closeSidebar();
+  closeMenu();
 }
 
-function openPayments() {
-  window.open("https://nowpayments.io/payment/?iid=6386319463", "_blank");
-  closeSidebar();
+function goPayments() {
+  alert("Payments Page");
 }
 
-function openReceipts() {
-  alert("Receipts page");
-  closeSidebar();
+function goReceipts() {
+  alert("Receipts Page");
 }
 
-function openCustomers() {
-  alert("Customers page");
-  closeSidebar();
+function goCustomers() {
+  alert("Customers Page");
 }
 
-function openWallet() {
-  alert("Wallet page");
-  closeSidebar();
-}
-
-function openAnalytics() {
-  alert("Analytics page");
-  closeSidebar();
-}
-
-function openRoutes() {
-  alert("Routes page");
-  closeSidebar();
-}
-
-function openSettings() {
-  alert("Settings page");
-  closeSidebar();
-}
-
-function openSupport() {
-  alert("Support");
-  closeSidebar();
+function goSettings() {
+  alert("Settings Page");
 }
 
 function logout() {
-  alert("Logged out");
-  closeSidebar();
+  alert("Logged Out");
+}
+
+/* PAY */
+function pay() {
+  window.open(
+    "https://nowpayments.io/payment/?iid=6386319463",
+    "_blank"
+  );
+}
+
+/* REQUEST */
+function requestPayment() {
+  alert("Request Sent");
 }
