@@ -1,34 +1,47 @@
-let amount = "";
+let value = "";
 
-/* INPUT */
-function press(val) {
-  if (val === "." && amount.includes(".")) return;
-  amount += val;
-  updateDisplay();
+function press(num) {
+    if (num === '.' && value.includes('.')) return;
+    value += num;
+    update();
 }
 
-function del() {
-  amount = amount.slice(0, -1);
-  updateDisplay();
+function clearAll() {
+    value = value.slice(0, -1);
+    update();
 }
 
-/* DISPLAY */
-function updateDisplay() {
-  let num = parseFloat(amount || "0");
+function update() {
+    let display = document.getElementById("price");
 
-  let formatted = num.toLocaleString("en-US", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
+    if (value === "") {
+        display.innerText = "0.00";
+        return;
+    }
 
-  document.getElementById("display").innerText = "$" + formatted;
+    let number = parseFloat(value);
+    if (isNaN(number)) number = 0;
+
+    display.innerText = number.toFixed(2);
+
+    autoFit(display);
 }
 
-/* ACTIONS */
-function requestMoney() {
-  alert("Request $" + (amount || "0.00"));
+/* 🔥 AUTO FIT TEXT (REAL FIX) */
+function autoFit(el) {
+    let size = 60;
+    el.style.fontSize = size + "px";
+
+    while (el.scrollWidth > el.clientWidth && size > 20) {
+        size--;
+        el.style.fontSize = size + "px";
+    }
 }
 
-function payMoney() {
-  alert("Pay $" + (amount || "0.00"));
+function request() {
+    alert("Request sent: $" + document.getElementById("price").innerText);
+}
+
+function pay() {
+    alert("Processing payment: $" + document.getElementById("price").innerText);
 }
