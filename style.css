@@ -1,92 +1,90 @@
 body {
-    margin: 0;
-    background: black;
-    font-family: Arial, sans-serif;
-    color: #00ff88;
+  margin: 0;
+  background: black;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
 }
 
 .app {
-    max-width: 420px;
-    margin: auto;
-    padding: 15px;
+  position: relative;
+  width: 100%;
+  height: 100vh;
 }
 
-/* BACKGROUND IMAGE */
-.header {
-    position: relative;
-}
-.bg {
-    width: 100%;
-    border-radius: 20px;
+/* UI IMAGE */
+.ui-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* PRICE BOX */
-.price-box {
-    margin-top: -80px;
-    position: relative;
-    z-index: 2;
+/* AMOUNT DISPLAY */
+.amount-wrapper {
+  position: absolute;
+  top: 29%;
+  left: 18%;
+  width: 64%;
+  height: 7%;
 
-    border: 2px solid #00ff88;
-    border-radius: 20px;
-    padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(10px);
-
-    overflow: hidden;
+  pointer-events: none;
 }
 
-/* DOLLAR */
+/* DOLLAR SIGN */
 .dollar {
-    font-size: 30px;
-    margin-right: 10px;
+  font-size: 6vw;
+  color: #00ff99;
+  text-shadow: 0 0 20px #00ff99;
 }
 
-/* PRICE TEXT */
-#price {
-    font-weight: bold;
-    white-space: nowrap;
-    text-align: center;
-
-    /* KEY: auto scaling */
-    font-size: clamp(24px, 8vw, 60px);
-
-    text-shadow: 0 0 20px #00ff88;
+/* NUMBER DISPLAY */
+#amount {
+  flex: 1;
+  font-size: 6vw;
+  color: #00ff99;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-shadow: 0 0 20px #00ff99;
 }
 
-/* BUTTONS */
-.actions {
-    display: flex;
-    gap: 10px;
-    margin: 20px 0;
+/* TOUCH LAYER */
+.touch-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
-.actions button {
-    flex: 1;
-    padding: 15px;
-    border-radius: 15px;
-    border: 2px solid #00ff88;
-    background: transparent;
-    color: #00ff88;
-    font-weight: bold;
+/* INVISIBLE BUTTONS */
+.b, .action {
+  position: absolute;
+  background: transparent;
+  border: none;
 }
 
-/* KEYPAD GRID */
-.keypad {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
+/* ===== GRID POSITIONING (MATCHES IMAGE EXACTLY) ===== */
 
-.keypad button {
-    padding: 25px;
-    font-size: 24px;
-    border-radius: 15px;
-    border: 2px solid #00ff88;
-    background: transparent;
-    color: #00ff88;
-}
+.b1 { top: 57%; left: 12%; width: 20%; height: 8%; }
+.b2 { top: 57%; left: 40%; width: 20%; height: 8%; }
+.b3 { top: 57%; left: 68%; width: 20%; height: 8%; }
+
+.b4 { top: 67%; left: 12%; width: 20%; height: 8%; }
+.b5 { top: 67%; left: 40%; width: 20%; height: 8%; }
+.b6 { top: 67%; left: 68%; width: 20%; height: 8%; }
+
+.b7 { top: 77%; left: 12%; width: 20%; height: 8%; }
+.b8 { top: 77%; left: 40%; width: 20%; height: 8%; }
+.b9 { top: 77%; left: 68%; width: 20%; height: 8%; }
+
+.bdot { top: 87%; left: 12%; width: 20%; height: 8%; }
+.b0   { top: 87%; left: 40%; width: 20%; height: 8%; }
+.bdel { top: 87%; left: 68%; width: 20%; height: 8%; }
+
+/* REQUEST / PAY */
+.request { top: 46%; left: 12%; width: 35%; height: 7%; }
+.pay     { top: 46%; left: 53%; width: 35%; height: 7%; }
