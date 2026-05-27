@@ -1,8 +1,8 @@
 body {
   margin: 0;
   background: black;
-  color: #00ff66;
   font-family: Arial;
+  overflow: hidden;
 }
 
 /* SPLASH */
@@ -14,47 +14,102 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  animation: fadeOut 7s forwards;
 }
 
-#logo {
+.logo {
   width: 220px;
   opacity: 0;
-  transform: scale(0.8);
-  animation: fadeInLogo 1.5s ease forwards;
-  filter: drop-shadow(0 0 20px #00ff66);
+  animation: fadeIn 7s forwards;
 }
 
-@keyframes fadeInLogo {
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.fade-out {
-  animation: fadeOut 0.8s forwards;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes fadeOut {
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
+  0% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
 }
 
-/* TOP BAR */
-.top-bar {
-  display: flex;
-  align-items: center;
-  padding: 10px;
+/* APP */
+.hidden {
+  display: none;
 }
 
-.top-bar button {
-  font-size: 22px;
-  background: none;
+#app {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+/* BACKGROUND IMAGE */
+.ui-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* MENU BUTTON */
+.menu-btn {
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  font-size: 28px;
+  color: #00ff88;
+  z-index: 10;
+}
+
+/* AMOUNT */
+#amount {
+  position: absolute;
+  top: 32%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 40px;
+  color: #00ff88;
+}
+
+/* BUTTONS */
+.btn {
+  position: absolute;
+  width: 38%;
+  height: 60px;
   border: none;
-  color: #00ff66;
+  background: transparent;
+  color: #00ff88;
+  font-size: 18px;
+}
+
+.request {
+  top: 43%;
+  left: 8%;
+}
+
+.pay {
+  top: 43%;
+  right: 8%;
+}
+
+/* KEYPAD */
+.keypad {
+  position: absolute;
+  bottom: 8%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  padding: 0 20px;
+}
+
+.keypad button {
+  height: 70px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  color: #00ff88;
 }
 
 /* SIDEBAR */
@@ -65,23 +120,13 @@ body {
   width: 260px;
   height: 100%;
   background: black;
-  box-shadow: 0 0 20px #00ff66;
   transition: 0.3s;
-  z-index: 1000;
-}
-
-.sidebar.open {
-  left: 0;
-}
-
-.profile {
-  text-align: center;
   padding: 20px;
+  border-right: 2px solid #00ff88;
 }
 
-.profile img {
-  width: 80px;
-  border-radius: 50%;
+.sidebar.active {
+  left: 0;
 }
 
 .sidebar ul {
@@ -90,56 +135,10 @@ body {
 }
 
 .sidebar li {
-  padding: 15px;
-  border-bottom: 1px solid #00ff66;
-  cursor: pointer;
+  padding: 15px 0;
+  color: #00ff88;
 }
 
-/* OVERLAY */
-#overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  display: none;
-}
-
-#overlay.active {
-  display: block;
-}
-
-/* MAIN */
-.container {
-  padding: 20px;
-}
-
-input {
-  width: 100%;
-  font-size: 28px;
-  text-align: center;
-  background: black;
-  border: 2px solid #00ff66;
-  color: #00ff66;
-  margin-bottom: 20px;
-}
-
-.buttons button {
-  width: 48%;
-  padding: 15px;
-  margin: 1%;
-  background: black;
-  border: 2px solid #00ff66;
-  color: #00ff66;
-}
-
-.keypad {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.keypad button {
-  padding: 20px;
-  font-size: 20px;
-  background: black;
-  color: #00ff66;
-  border: 1px solid #00ff66;
+.logout {
+  color: red;
 }
