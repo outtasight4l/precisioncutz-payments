@@ -1,5 +1,5 @@
 // ==============================
-// 🛡️ SAFE SERVICE WORKER
+// 🛡️ SAFE SERVICE WORKER FIX
 // ==============================
 
 self.addEventListener("install", event => {
@@ -10,7 +10,7 @@ self.addEventListener("activate", event => {
   event.waitUntil(self.clients.claim());
 });
 
-// ✅ NEVER CRASH FETCH
+// ✅ FIXED: prevents "Load failed" crash
 self.addEventListener("fetch", event => {
   event.respondWith(
     fetch(event.request).catch(() => {
