@@ -1,61 +1,93 @@
-// AUTO IMAGE LOADER (FIXES ui.PNG ISSUE)
-const img = document.getElementById("uiImage");
+let value = "0.00";
 
-const possibleNames = ["ui.png", "ui.PNG", "Ui.png", "UI.PNG"];
-
-function loadImage(i = 0) {
-  if (i >= possibleNames.length) return;
-  img.src = possibleNames[i];
-  img.onerror = () => loadImage(i + 1);
+/* DISPLAY */
+function updateDisplay() {
+  document.getElementById("amount").innerText = "$" + value;
 }
-loadImage();
 
-
-// AMOUNT LOGIC
-let value = "0";
-
+/* INPUT */
 function press(num) {
-  if (num === "." && value.includes(".")) return;
-
-  if (value === "0" && num !== ".") {
-    value = num;
-  } else {
-    value += num;
-  }
-
-  update();
+  if (value === "0.00") value = "";
+  value += num;
+  format();
 }
 
-function del() {
+function dot() {
+  if (!value.includes(".")) value += ".";
+  format();
+}
+
+function clearLast() {
   value = value.slice(0, -1);
-  if (value === "") value = "0";
-  update();
+  if (value === "" || value === ".") value = "0.00";
+  format();
 }
 
-function update() {
-  let display = document.getElementById("amount");
-
+function format() {
   let num = parseFloat(value);
   if (isNaN(num)) num = 0;
-
-  let formatted = num.toFixed(2);
-  display.innerText = formatted;
-
-  // AUTO SCALE FONT
-  let size = 6;
-  if (formatted.length > 10) size = 5;
-  if (formatted.length > 14) size = 4;
-  if (formatted.length > 18) size = 3;
-
-  display.style.fontSize = size + "vw";
+  value = num.toFixed(2);
+  updateDisplay();
 }
 
-
-// ACTIONS
-function requestPay() {
-  alert("Request: $" + value);
+/* BUTTON ACTIONS */
+function requestMoney() {
+  alert("Request $" + value);
 }
 
-function payNow() {
-  alert("Pay: $" + value);
+function payMoney() {
+  alert("Pay $" + value);
+}
+
+function openQR() {
+  alert("QR Scanner coming next");
+}
+
+/* AI SYSTEM */
+function openAI() {
+  document.getElementById("chatModal").style.display = "flex";
+}
+
+function closeAI() {
+  document.getElementById("chatModal").style.display = "none";
+}
+
+function addMessage(text, type) {
+  const msg = document.createElement("div");
+  msg.innerText = text;
+  msg.style.margin = "5px";
+  msg.style.color = type === "user" ? "#00ff99" : "#fff";
+  document.getElementById("chatMessages").appendChild(msg);
+}
+
+async function sendMessage() {
+  const input = document.getElementById("userInput");
+  const text = input.value;
+
+  if (!text) return;
+
+  addMessage("You: " + text, "user");
+  input.value = "";
+
+  try {
+    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer YOUR_API_KEY"
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [{ role: "user", content: text }]
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.choices[0].message.content;
+
+    addMessage("AI: " + reply, "ai");
+
+  } catch (err) {
+    addMessage("AI Error: Check API Key", "ai");
+  }
 }
