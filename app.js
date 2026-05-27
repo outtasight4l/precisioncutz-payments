@@ -1,25 +1,17 @@
-// AUTO LOAD IMAGE (handles PNG / png issues)
+// AUTO IMAGE LOADER (FIXES ui.PNG ISSUE)
 const img = document.getElementById("uiImage");
 
-const possibleNames = [
-  "ui.png",
-  "ui.PNG",
-  "Ui.png",
-  "UI.PNG"
-];
+const possibleNames = ["ui.png", "ui.PNG", "Ui.png", "UI.PNG"];
 
-function loadImage(index = 0) {
-  if (index >= possibleNames.length) {
-    console.error("UI image not found.");
-    return;
-  }
-
-  img.src = possibleNames[index];
-
-  img.onerror = () => loadImage(index + 1);
+function loadImage(i = 0) {
+  if (i >= possibleNames.length) return;
+  img.src = possibleNames[i];
+  img.onerror = () => loadImage(i + 1);
 }
-
 loadImage();
+
+
+// AMOUNT LOGIC
 let value = "0";
 
 function press(num) {
@@ -47,10 +39,9 @@ function update() {
   if (isNaN(num)) num = 0;
 
   let formatted = num.toFixed(2);
-
   display.innerText = formatted;
 
-  // AUTO RESIZE TO NEVER OVERFLOW BOX
+  // AUTO SCALE FONT
   let size = 6;
   if (formatted.length > 10) size = 5;
   if (formatted.length > 14) size = 4;
@@ -59,12 +50,12 @@ function update() {
   display.style.fontSize = size + "vw";
 }
 
-/* ACTION BUTTONS */
 
+// ACTIONS
 function requestPay() {
-  alert("Request Sent: $" + value);
+  alert("Request: $" + value);
 }
 
 function payNow() {
-  alert("Payment Sent: $" + value);
+  alert("Pay: $" + value);
 }
