@@ -3,6 +3,7 @@ const cors = require("cors");
 const stripe = require("stripe")("sk_live_OR_test_key_here"); // 🔥 PUT YOUR SECRET KEY HERE
 
 const app = express();
+const fetch = require("node-fetch");
 
 app.use(cors());
 app.use(express.json());
