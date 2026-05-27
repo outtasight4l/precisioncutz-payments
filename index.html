@@ -1,57 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Precision Cutz Pay</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Precision Cutz</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- SPLASH -->
+<!-- SPLASH SCREEN -->
 <div id="splash">
-  <img src="logo.png" id="logo">
+  <img src="logo.png" class="logo">
 </div>
 
-<!-- TOP BAR -->
-<div class="top-bar">
-  <button onclick="openMenu()">☰</button>
-  <h1>Precision Cutz</h1>
-</div>
+<!-- MAIN APP -->
+<div id="app" class="hidden">
 
-<!-- SIDEBAR -->
-<div id="sidebar" class="sidebar">
+  <!-- MENU BUTTON -->
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
-  <div class="profile" onclick="openProfile()">
-    <img src="profile.jpg">
-    <h3>CryptoGang85</h3>
-  </div>
+  <!-- BACKGROUND UI IMAGE -->
+  <img src="ui.png" class="ui-bg">
 
-  <ul>
-    <li onclick="goHome()">🏠 Home</li>
-    <li onclick="goPayments()">💳 Payments</li>
-    <li onclick="goReceipts()">🧾 Receipts</li>
-    <li onclick="goCustomers()">👥 Customers</li>
-    <li onclick="goSettings()">⚙️ Settings</li>
-    <li onclick="logout()">🚪 Logout</li>
-  </ul>
+  <!-- AMOUNT DISPLAY -->
+  <div id="amount">$0.00</div>
 
-</div>
+  <!-- BUTTONS -->
+  <button class="btn request" onclick="requestMoney()">REQUEST</button>
+  <button class="btn pay" onclick="payNow()">PAY</button>
 
-<!-- OVERLAY -->
-<div id="overlay" onclick="closeMenu()"></div>
-
-<!-- MAIN -->
-<div class="container">
-
-  <input id="amount" placeholder="$0.00" readonly>
-
-  <div class="buttons">
-    <button onclick="requestPayment()">REQUEST</button>
-    <button onclick="pay()">PAY</button>
-  </div>
-
+  <!-- KEYPAD -->
   <div class="keypad">
     <button onclick="press(1)">1</button>
     <button onclick="press(2)">2</button>
@@ -64,11 +43,32 @@
     <button onclick="press(9)">9</button>
     <button onclick="press('.')">.</button>
     <button onclick="press(0)">0</button>
-    <button onclick="clearInput()">⌫</button>
+    <button onclick="clearAmount()">⌫</button>
   </div>
 
 </div>
 
-<script src="app.js"></script>
+<!-- SIDEBAR -->
+<div id="sidebar" class="sidebar">
+  <div class="profile">
+    <img src="profile.png">
+    <h2>CryptoGang85</h2>
+  </div>
+
+  <ul>
+    <li>Home</li>
+    <li>Payments</li>
+    <li>Receipts</li>
+    <li>Customers</li>
+    <li>Wallet</li>
+    <li>Analytics</li>
+    <li>Routes</li>
+    <li>Settings</li>
+    <li>Support</li>
+    <li class="logout">Logout</li>
+  </ul>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
