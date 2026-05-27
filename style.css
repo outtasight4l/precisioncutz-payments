@@ -1,86 +1,83 @@
 body {
   margin: 0;
   background: black;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
 }
 
 .app {
   position: relative;
+  max-width: 420px;
+  margin: auto;
+}
+
+.ui {
   width: 100%;
-  height: 100vh;
-}
-
-/* UI BACKGROUND */
-.ui-bg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* AMOUNT AREA */
-.amount-wrapper {
-  position: absolute;
-  top: 30%;
-  left: 15%;
-  width: 70%;
-  height: 7%;
-
-  display: flex;
-  align-items: center;
-
-  pointer-events: none;
-}
-
-.dollar {
-  font-size: 7vw;
-  color: #00ff99;
-  text-shadow: 0 0 20px #00ff99;
-  margin-right: 10px;
-}
-
-#amount {
-  flex: 1;
-  font-size: 6vw;
-  color: #00ff99;
-  white-space: nowrap;
-  overflow: hidden;
-  text-shadow: 0 0 20px #00ff99;
-}
-
-/* TOUCH LAYER */
-.touch-layer {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+  display: block;
 }
 
 /* INVISIBLE BUTTONS */
-.btn, .action {
+.btn {
   position: absolute;
   background: transparent;
   border: none;
 }
 
-/* NUMBER GRID */
-.b1 { top: 57%; left: 12%; width: 20%; height: 8%; }
-.b2 { top: 57%; left: 40%; width: 20%; height: 8%; }
-.b3 { top: 57%; left: 68%; width: 20%; height: 8%; }
+/* QR */
+.qr {
+  top: 6%;
+  left: 6%;
+  width: 70px;
+  height: 70px;
+}
 
-.b4 { top: 67%; left: 12%; width: 20%; height: 8%; }
-.b5 { top: 67%; left: 40%; width: 20%; height: 8%; }
-.b6 { top: 67%; left: 68%; width: 20%; height: 8%; }
+/* AI */
+.ai {
+  top: 6%;
+  right: 6%;
+  width: 70px;
+  height: 70px;
+}
 
-.b7 { top: 77%; left: 12%; width: 20%; height: 8%; }
-.b8 { top: 77%; left: 40%; width: 20%; height: 8%; }
-.b9 { top: 77%; left: 68%; width: 20%; height: 8%; }
+/* REQUEST */
+.request {
+  top: 45%;
+  left: 8%;
+  width: 38%;
+  height: 60px;
+}
 
-.bdot { top: 87%; left: 12%; width: 20%; height: 8%; }
-.b0   { top: 87%; left: 40%; width: 20%; height: 8%; }
-.bdel { top: 87%; left: 68%; width: 20%; height: 8%; }
+/* PAY */
+.pay {
+  top: 45%;
+  right: 8%;
+  width: 38%;
+  height: 60px;
+}
 
-/* ACTION BUTTONS */
-.request { top: 46%; left: 12%; width: 35%; height: 7%; }
-.pay     { top: 46%; left: 53%; width: 35%; height: 7%; }
+/* DISPLAY */
+.display {
+  position: absolute;
+  top: 34%;
+  left: 28%;
+  width: 55%;
+  color: #00ff99;
+  font-size: 26px;
+  font-weight: bold;
+  pointer-events: none;
+}
+
+/* KEYPAD */
+.keypad {
+  position: absolute;
+  top: 58%;
+  left: 10%;
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.keypad button {
+  height: 75px;
+  background: transparent;
+  border: none;
+}
