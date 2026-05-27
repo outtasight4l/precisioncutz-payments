@@ -4,84 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Precision Cutz Pay</title>
-
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ================= SIDEBAR ================= -->
+<!-- SPLASH -->
+<div id="splash">
+  <img src="logo.png" id="logo">
+</div>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <button onclick="openMenu()">☰</button>
+  <h1>Precision Cutz</h1>
+</div>
+
+<!-- SIDEBAR -->
 <div id="sidebar" class="sidebar">
 
-  <div class="sidebar-header">
-    <h2>MENU</h2>
+  <div class="profile" onclick="openProfile()">
+    <img src="profile.jpg">
+    <h3>CryptoGang85</h3>
   </div>
 
-  <div class="sidebar-item active" onclick="goHome()">
-    🏠 HOME
-  </div>
-
-  <div class="sidebar-item" onclick="openPayments()">
-    💳 PAYMENTS
-  </div>
-
-  <div class="sidebar-item" onclick="openReceipts()">
-    🧾 RECEIPTS
-  </div>
-
-  <div class="sidebar-item" onclick="openCustomers()">
-    👥 CUSTOMERS
-  </div>
-
-  <div class="sidebar-item" onclick="openWallet()">
-    👛 WALLET
-  </div>
-
-  <div class="sidebar-item" onclick="openAnalytics()">
-    📊 ANALYTICS
-  </div>
-
-  <div class="sidebar-item" onclick="openRoutes()">
-    📍 ROUTES
-  </div>
-
-  <div class="sidebar-item" onclick="openSettings()">
-    ⚙️ SETTINGS
-  </div>
-
-  <div class="sidebar-item" onclick="openSupport()">
-    🎧 SUPPORT
-  </div>
-
-  <div class="sidebar-divider"></div>
-
-  <div class="sidebar-item logout" onclick="logout()">
-    🚪 LOG OUT
-  </div>
+  <ul>
+    <li onclick="goHome()">🏠 Home</li>
+    <li onclick="goPayments()">💳 Payments</li>
+    <li onclick="goReceipts()">🧾 Receipts</li>
+    <li onclick="goCustomers()">👥 Customers</li>
+    <li onclick="goSettings()">⚙️ Settings</li>
+    <li onclick="logout()">🚪 Logout</li>
+  </ul>
 
 </div>
 
-<!-- ================= OVERLAY ================= -->
-<div id="overlay" onclick="closeSidebar()"></div>
+<!-- OVERLAY -->
+<div id="overlay" onclick="closeMenu()"></div>
 
-<!-- ================= APP ================= -->
-<div class="app">
+<!-- MAIN -->
+<div class="container">
 
-  <!-- TOP BAR -->
-  <div class="top-bar">
-    <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+  <input id="amount" placeholder="$0.00" readonly>
+
+  <div class="buttons">
+    <button onclick="requestPayment()">REQUEST</button>
+    <button onclick="pay()">PAY</button>
   </div>
 
-  <!-- YOUR EXISTING UI HERE -->
-  <div class="content">
-    <h1>Precision Cutz Pay</h1>
-  </div>
-
-  <!-- BOTTOM NAV -->
-  <div class="bottom-nav">
-    <button onclick="toggleSidebar()">MENU</button>
-    <button onclick="goHome()">HOME</button>
-    <button onclick="openSupport()">SUPPORT</button>
+  <div class="keypad">
+    <button onclick="press(1)">1</button>
+    <button onclick="press(2)">2</button>
+    <button onclick="press(3)">3</button>
+    <button onclick="press(4)">4</button>
+    <button onclick="press(5)">5</button>
+    <button onclick="press(6)">6</button>
+    <button onclick="press(7)">7</button>
+    <button onclick="press(8)">8</button>
+    <button onclick="press(9)">9</button>
+    <button onclick="press('.')">.</button>
+    <button onclick="press(0)">0</button>
+    <button onclick="clearInput()">⌫</button>
   </div>
 
 </div>
