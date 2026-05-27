@@ -6,79 +6,77 @@
 <title>Precision Cutz</title>
 
 <style>
-body {
+body{
   margin:0;
   background:black;
+  font-family:sans-serif;
 }
 
-/* UI */
-.ui {
+.ui{
   position:relative;
   width:100%;
   max-width:430px;
   margin:auto;
 }
 
-.ui img {
+.ui img{
   width:100%;
 }
 
-/* PRICE (AUTO FIT) */
-#price {
+/* PRICE AUTO FIT */
+#price{
   position:absolute;
   top:34%;
   left:15%;
   width:70%;
   text-align:right;
-
-  font-weight:bold;
   color:#00ff66;
+  font-weight:bold;
+  white-space:nowrap;
 
   text-shadow:
     0 0 10px #00ff66,
     0 0 30px #00ff66,
     0 0 60px #00ff66;
-
-  white-space:nowrap;
 }
 
-/* BUTTONS */
-.btn {
+/* BUTTON BASE */
+.btn{
   position:absolute;
   border-radius:15px;
 }
 
-.btn:active {
+.btn:active{
   transform:scale(0.92);
   box-shadow:0 0 25px #00ff66 inset;
 }
 
 /* KEYPAD */
-.key { width:26%; height:9%; }
+.key{ width:26%; height:9%; }
 
-.k1 {top:56%; left:7%;}
-.k2 {top:56%; left:37%;}
-.k3 {top:56%; left:67%;}
+.k1{top:56%; left:7%;}
+.k2{top:56%; left:37%;}
+.k3{top:56%; left:67%;}
 
-.k4 {top:66%; left:7%;}
-.k5 {top:66%; left:37%;}
-.k6 {top:66%; left:67%;}
+.k4{top:66%; left:7%;}
+.k5{top:66%; left:37%;}
+.k6{top:66%; left:67%;}
 
-.k7 {top:76%; left:7%;}
-.k8 {top:76%; left:37%;}
-.k9 {top:76%; left:67%;}
+.k7{top:76%; left:7%;}
+.k8{top:76%; left:37%;}
+.k9{top:76%; left:67%;}
 
-.kC {top:86%; left:7%;}
-.k0 {top:86%; left:37%;}
-.kB {top:86%; left:67%;}
+.kC{top:86%; left:7%;}
+.k0{top:86%; left:37%;}
+.kB{top:86%; left:67%;}
 
-/* TOP */
-.qr {top:4%; left:5%; width:13%; height:9%;}
-.ai {top:4%; right:5%; width:13%; height:9%;}
-.heart {top:4%; right:25%; width:13%; height:9%;}
+/* TOP BUTTONS */
+.qr{top:4%; left:5%; width:13%; height:9%;}
+.ai{top:4%; right:5%; width:13%; height:9%;}
+.heart{top:4%; right:25%; width:13%; height:9%;}
 
-/* NEON MODAL */
-.modal {
+/* MODAL */
+.modal{
   position:fixed;
   top:0;
   left:0;
@@ -90,26 +88,69 @@ body {
   background:rgba(0,0,0,0.9);
 }
 
-.modal-box {
+/* MODAL BOX */
+.modal-box{
   width:80%;
   max-width:300px;
   padding:20px;
-  border-radius:15px;
+  border-radius:20px;
   border:2px solid #00ff66;
   box-shadow:0 0 30px #00ff66;
+  background:black;
   text-align:center;
   color:#00ff66;
-  background:black;
   animation:fadeIn 0.3s ease;
 }
 
-@keyframes fadeIn {
-  from {opacity:0; transform:scale(0.8);}
-  to {opacity:1; transform:scale(1);}
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(0.8);}
+  to{opacity:1; transform:scale(1);}
 }
 
-.modal button {
-  margin-top:15px;
+/* AI ICON */
+.ai-icon{
+  width:70px;
+  height:70px;
+  margin:0 auto 15px;
+  border-radius:50%;
+  border:2px solid #00ff66;
+  box-shadow:0 0 20px #00ff66, inset 0 0 15px #00ff66;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.robot-face{
+  width:35px;
+  height:25px;
+  border:2px solid #00ff66;
+  border-radius:8px;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 0 10px #00ff66;
+}
+
+.eye{
+  width:6px;
+  height:6px;
+  background:#00ff66;
+  border-radius:50%;
+  box-shadow:0 0 8px #00ff66;
+}
+
+.ai-title{
+  font-size:20px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.ai-text{
+  font-size:15px;
+  margin-bottom:15px;
+}
+
+.modal button{
   padding:10px 20px;
   border:none;
   border-radius:10px;
@@ -154,10 +195,17 @@ body {
 <!-- AI MODAL -->
 <div class="modal" id="aiModal">
   <div class="modal-box">
-    🤖 AI SYSTEM  
-    <br><br>
-    Voice control & automation coming next
-    <br>
+
+    <div class="ai-icon">
+      <div class="robot-face">
+        <div class="eye"></div>
+        <div class="eye"></div>
+      </div>
+    </div>
+
+    <div class="ai-title">AI SYSTEM</div>
+    <div class="ai-text">Voice control & automation coming next</div>
+
     <button onclick="closeAI()">Close</button>
   </div>
 </div>
@@ -171,11 +219,10 @@ function update(){
 
   el.innerText = text;
 
-  // AUTO FIT
   let size = 70;
   el.style.fontSize = size + "px";
 
-  while (el.scrollWidth > el.parentElement.clientWidth * 0.7 && size > 25) {
+  while (el.scrollWidth > el.parentElement.clientWidth * 0.7 && size > 25){
     size -= 2;
     el.style.fontSize = size + "px";
   }
@@ -197,7 +244,7 @@ function backspace(){
   update();
 }
 
-/* AI MODAL */
+/* AI */
 function openAI(){
   document.getElementById("aiModal").style.display = "flex";
 }
