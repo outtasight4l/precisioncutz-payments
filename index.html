@@ -1,270 +1,255 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Precision Cutz</title>
+<title>Precision Cutz Pay</title>
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00ff88">
+
+<script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
-body{
-  margin:0;
-  background:black;
-  font-family:sans-serif;
+body {
+  margin: 0;
+  background: black;
+  font-family: Arial, sans-serif;
+  color: #00ff88;
+  text-align: center;
 }
 
-.ui{
-  position:relative;
-  width:100%;
-  max-width:430px;
-  margin:auto;
+/* BACKGROUND IMAGE (YOUR UI.PNG) */
+.bg {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: url("ui.PNG") center/cover no-repeat;
+  z-index: -1;
 }
 
-.ui img{
-  width:100%;
+/* TOP ICONS */
+.top-icons {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
 }
 
-/* PRICE AUTO FIT */
-#price{
-  position:absolute;
-  top:34%;
-  left:15%;
-  width:70%;
-  text-align:right;
-  color:#00ff66;
-  font-weight:bold;
-  white-space:nowrap;
-
-  text-shadow:
-    0 0 10px #00ff66,
-    0 0 30px #00ff66,
-    0 0 60px #00ff66;
+.icon {
+  border: 2px solid #00ff88;
+  border-radius: 50%;
+  padding: 12px;
+  font-size: 20px;
+  box-shadow: 0 0 15px #00ff88;
+  cursor: pointer;
 }
 
-/* BUTTON BASE */
-.btn{
-  position:absolute;
-  border-radius:15px;
+/* AMOUNT BOX */
+.amount-box {
+  margin: 200px auto 20px;
+  width: 85%;
+  padding: 20px;
+  border-radius: 20px;
+  border: 2px solid #00ff88;
+  box-shadow: 0 0 25px #00ff88 inset;
+  overflow: hidden;
 }
 
-.btn:active{
-  transform:scale(0.92);
-  box-shadow:0 0 25px #00ff66 inset;
+#amount {
+  font-size: clamp(40px, 10vw, 90px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 0 20px #00ff88;
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  border: 2px solid #00ff88;
+  padding: 15px 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ff88;
 }
 
 /* KEYPAD */
-.key{ width:26%; height:9%; }
-
-.k1{top:56%; left:7%;}
-.k2{top:56%; left:37%;}
-.k3{top:56%; left:67%;}
-
-.k4{top:66%; left:7%;}
-.k5{top:66%; left:37%;}
-.k6{top:66%; left:67%;}
-
-.k7{top:76%; left:7%;}
-.k8{top:76%; left:37%;}
-.k9{top:76%; left:67%;}
-
-.kC{top:86%; left:7%;}
-.k0{top:86%; left:37%;}
-.kB{top:86%; left:67%;}
-
-/* TOP BUTTONS */
-.qr{top:4%; left:5%; width:13%; height:9%;}
-.ai{top:4%; right:5%; width:13%; height:9%;}
-.heart{top:4%; right:25%; width:13%; height:9%;}
-
-/* MODAL */
-.modal{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,0.9);
+.keypad {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
 }
 
-/* MODAL BOX */
-.modal-box{
-  width:80%;
-  max-width:300px;
-  padding:20px;
-  border-radius:20px;
-  border:2px solid #00ff66;
-  box-shadow:0 0 30px #00ff66;
-  background:black;
-  text-align:center;
-  color:#00ff66;
-  animation:fadeIn 0.3s ease;
+.key {
+  border: 2px solid #00ff88;
+  padding: 30px;
+  border-radius: 15px;
+  font-size: 24px;
+  box-shadow: 0 0 10px #00ff88;
+  cursor: pointer;
 }
 
-@keyframes fadeIn{
-  from{opacity:0; transform:scale(0.8);}
-  to{opacity:1; transform:scale(1);}
+/* POPUPS */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: black;
+  border: 2px solid #00ff88;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 25px #00ff88;
+  display: none;
+  z-index: 1000;
 }
 
-/* AI ICON */
-.ai-icon{
-  width:70px;
-  height:70px;
-  margin:0 auto 15px;
-  border-radius:50%;
-  border:2px solid #00ff66;
-  box-shadow:0 0 20px #00ff66, inset 0 0 15px #00ff66;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.popup button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: #00ff88;
+  border: none;
+  border-radius: 8px;
 }
 
-.robot-face{
-  width:35px;
-  height:25px;
-  border:2px solid #00ff66;
-  border-radius:8px;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-  box-shadow:0 0 10px #00ff66;
-}
-
-.eye{
-  width:6px;
-  height:6px;
-  background:#00ff66;
-  border-radius:50%;
-  box-shadow:0 0 8px #00ff66;
-}
-
-.ai-title{
-  font-size:20px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
-
-.ai-text{
-  font-size:15px;
-  margin-bottom:15px;
-}
-
-.modal button{
-  padding:10px 20px;
-  border:none;
-  border-radius:10px;
-  background:#00ff66;
-  color:black;
-  font-weight:bold;
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  top: 0;
+  left: 0;
+  display: none;
+  z-index: 999;
 }
 </style>
 </head>
 
 <body>
 
-<div class="ui">
-  <img src="ui.PNG">
+<div class="bg"></div>
 
-  <!-- PRICE -->
-  <div id="price">$0.00</div>
-
-  <!-- KEYPAD -->
-  <div class="btn key k1" onclick="press(1)"></div>
-  <div class="btn key k2" onclick="press(2)"></div>
-  <div class="btn key k3" onclick="press(3)"></div>
-
-  <div class="btn key k4" onclick="press(4)"></div>
-  <div class="btn key k5" onclick="press(5)"></div>
-  <div class="btn key k6" onclick="press(6)"></div>
-
-  <div class="btn key k7" onclick="press(7)"></div>
-  <div class="btn key k8" onclick="press(8)"></div>
-  <div class="btn key k9" onclick="press(9)"></div>
-
-  <div class="btn key kC" onclick="clearAll()"></div>
-  <div class="btn key k0" onclick="press(0)"></div>
-  <div class="btn key kB" onclick="backspace()"></div>
-
-  <!-- TOP -->
-  <div class="btn qr" onclick="openQR()"></div>
-  <div class="btn ai" onclick="openAI()"></div>
-  <div class="btn heart" onclick="heartbeat(this)"></div>
+<div class="top-icons">
+  <div class="icon" onclick="openQR()">📷</div>
+  <div class="icon" onclick="openAI()">🤖</div>
 </div>
 
-<!-- AI MODAL -->
-<div class="modal" id="aiModal">
-  <div class="modal-box">
+<div class="amount-box">
+  <div id="amount">$0.00</div>
+</div>
 
-    <div class="ai-icon">
-      <div class="robot-face">
-        <div class="eye"></div>
-        <div class="eye"></div>
-      </div>
-    </div>
+<div class="buttons">
+  <div class="btn" onclick="request()">REQUEST</div>
+  <div class="btn" onclick="pay()">PAY</div>
+</div>
 
-    <div class="ai-title">AI SYSTEM</div>
-    <div class="ai-text">Voice control & automation coming next</div>
+<div class="keypad">
+  <div class="key" onclick="add('1')">1</div>
+  <div class="key" onclick="add('2')">2</div>
+  <div class="key" onclick="add('3')">3</div>
+  <div class="key" onclick="add('4')">4</div>
+  <div class="key" onclick="add('5')">5</div>
+  <div class="key" onclick="add('6')">6</div>
+  <div class="key" onclick="add('7')">7</div>
+  <div class="key" onclick="add('8')">8</div>
+  <div class="key" onclick="add('9')">9</div>
+  <div class="key" onclick="add('.')">.</div>
+  <div class="key" onclick="add('0')">0</div>
+  <div class="key" onclick="clearAll()">⌫</div>
+</div>
 
-    <button onclick="closeAI()">Close</button>
-  </div>
+<div class="overlay" id="overlay"></div>
+
+<!-- AI POPUP -->
+<div class="popup" id="aiPopup">
+  <h2>🤖 AI SYSTEM</h2>
+  <p>Voice control & automation coming next</p>
+  <button onclick="closePopup()">Close</button>
+</div>
+
+<!-- QR SCANNER -->
+<div class="popup" id="qrPopup">
+  <div id="reader" style="width:300px"></div>
+  <button onclick="closePopup()">Close</button>
 </div>
 
 <script>
-let amount = 0;
+let value = "";
 
-function update(){
-  let text = "$" + (amount/100).toFixed(2);
-  let el = document.getElementById("price");
-
-  el.innerText = text;
-
-  let size = 70;
-  el.style.fontSize = size + "px";
-
-  while (el.scrollWidth > el.parentElement.clientWidth * 0.7 && size > 25){
-    size -= 2;
-    el.style.fontSize = size + "px";
-  }
-}
-
-/* INPUT */
-function press(n){
-  amount = amount*10 + n;
+function add(num) {
+  value += num;
   update();
 }
 
-function clearAll(){
-  amount = 0;
+function clearAll() {
+  value = "";
   update();
 }
 
-function backspace(){
-  amount = Math.floor(amount/10);
-  update();
+function update() {
+  let num = parseFloat(value);
+  document.getElementById("amount").innerText =
+    isNaN(num) ? "$0.00" : "$" + num.toFixed(2);
+}
+
+/* PAY */
+function pay() {
+  if (!value) return alert("Enter amount");
+
+  const amount = parseFloat(value).toFixed(2);
+  window.location.href = `https://cash.app/$cryptogang85/${amount}`;
+}
+
+/* REQUEST */
+function request() {
+  alert("Request sent (connect backend later)");
 }
 
 /* AI */
-function openAI(){
-  document.getElementById("aiModal").style.display = "flex";
-}
-
-function closeAI(){
-  document.getElementById("aiModal").style.display = "none";
-}
-
-/* HEART */
-function heartbeat(el){
-  el.style.boxShadow = "0 0 30px #00ff66";
-  setTimeout(()=> el.style.boxShadow = "", 500);
+function openAI() {
+  showPopup("aiPopup");
 }
 
 /* QR */
-function openQR(){
-  window.location.href = "https://cash.app/$cryptogang85";
+function openQR() {
+  showPopup("qrPopup");
+
+  const qr = new Html5Qrcode("reader");
+  qr.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    (text) => {
+      alert("Scanned: " + text);
+      qr.stop();
+      closePopup();
+    }
+  );
 }
 
-update();
+/* POPUP CONTROL */
+function showPopup(id) {
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById(id).style.display = "block";
+}
+
+function closePopup() {
+  document.getElementById("overlay").style.display = "none";
+  document.querySelectorAll(".popup").forEach(p => p.style.display = "none");
+}
+
+/* SERVICE WORKER */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
 </script>
 
 </body>
