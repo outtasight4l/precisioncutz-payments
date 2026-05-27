@@ -3,89 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Precision Cutz Pay</title>
+
+<title>Precision Cutz</title>
+
+<link rel="manifest" href="manifest.json">
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
   background: black;
-  color: #00ff88;
-  text-align: center;
 }
 
-/* BACKGROUND IMAGE (YOUR UI.PNG) */
-.bg {
-  position: fixed;
+/* APP CONTAINER */
+.app {
+  position: relative;
+  max-width: 420px;
+  margin: auto;
+}
+
+/* UI IMAGE */
+.ui {
   width: 100%;
-  height: 100%;
-  background: url("ui.PNG") no-repeat center center;
-  background-size: cover;
-  z-index: -1;
+  display: block;
 }
 
-/* PRICE BOX */
-.amount-box {
+/* PRICE DISPLAY */
+#amount {
   position: absolute;
-  top: 34%;
+  top: 33%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70%;
-  height: 80px;
-  border-radius: 20px;
-  border: 2px solid #00ff88;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 20px #00ff88;
-  overflow: hidden;
-}
-
-/* PRICE TEXT (AUTO FIT) */
-#amount {
-  white-space: nowrap;
+  color: #00ff88;
   font-weight: bold;
   text-shadow: 0 0 20px #00ff88;
-  transition: 0.2s;
+  white-space: nowrap;
 }
 
-/* BUTTONS */
-.buttons {
+/* INVISIBLE BUTTONS */
+.hit {
   position: absolute;
-  top: 48%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+  background: transparent;
 }
 
-.btn {
-  border: 2px solid #00ff88;
-  padding: 12px 30px;
-  border-radius: 15px;
-  box-shadow: 0 0 15px #00ff88;
-  cursor: pointer;
+/* REQUEST */
+#request {
+  top: 45%;
+  left: 15%;
+  width: 30%;
+  height: 8%;
 }
 
-/* KEYPAD */
-.keypad {
-  position: absolute;
-  bottom: 5%;
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 0 30px;
+/* PAY */
+#pay {
+  top: 45%;
+  right: 15%;
+  width: 30%;
+  height: 8%;
 }
 
-.key {
-  border: 2px solid #00ff88;
-  padding: 25px;
-  border-radius: 20px;
-  font-size: 24px;
-  box-shadow: 0 0 15px #00ff88;
-  cursor: pointer;
+/* QR BUTTON */
+#qr {
+  top: 12%;
+  left: 8%;
+  width: 12%;
+  height: 8%;
 }
+
+/* AI BUTTON */
+#ai {
+  top: 12%;
+  right: 8%;
+  width: 12%;
+  height: 8%;
+}
+
+/* KEYS */
+.key { width: 22%; height: 9%; }
+
+.k1 { top: 55%; left: 10%; }
+.k2 { top: 55%; left: 39%; }
+.k3 { top: 55%; left: 68%; }
+
+.k4 { top: 66%; left: 10%; }
+.k5 { top: 66%; left: 39%; }
+.k6 { top: 66%; left: 68%; }
+
+.k7 { top: 77%; left: 10%; }
+.k8 { top: 77%; left: 39%; }
+.k9 { top: 77%; left: 68%; }
+
+.kdot { top: 88%; left: 10%; }
+.k0   { top: 88%; left: 39%; }
+.kdel { top: 88%; left: 68%; }
 
 /* MODAL */
 .modal {
@@ -95,109 +104,25 @@ body {
   transform: translate(-50%, -50%);
   background: black;
   border: 2px solid #00ff88;
-  padding: 30px;
+  padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 0 30px #00ff88;
+  box-shadow: 0 0 25px #00ff88;
   display: none;
+  color: #00ff88;
+  text-align: center;
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
+<div class="app">
 
-<!-- PRICE -->
-<div class="amount-box">
+  <img src="ui.PNG" class="ui">
+
   <div id="amount">$0.00</div>
-</div>
 
-<!-- BUTTONS -->
-<div class="buttons">
-  <div class="btn" onclick="requestPay()">REQUEST</div>
-  <div class="btn" onclick="payNow()">PAY</div>
-</div>
-
-<!-- KEYPAD -->
-<div class="keypad">
-  <div class="key" onclick="press(1)">1</div>
-  <div class="key" onclick="press(2)">2</div>
-  <div class="key" onclick="press(3)">3</div>
-  <div class="key" onclick="press(4)">4</div>
-  <div class="key" onclick="press(5)">5</div>
-  <div class="key" onclick="press(6)">6</div>
-  <div class="key" onclick="press(7)">7</div>
-  <div class="key" onclick="press(8)">8</div>
-  <div class="key" onclick="press(9)">9</div>
-  <div class="key" onclick="press('.')">.</div>
-  <div class="key" onclick="press(0)">0</div>
-  <div class="key" onclick="clearAmount()">⌫</div>
-</div>
-
-<!-- MODAL -->
-<div id="modal" class="modal">
-  <h2>💳 Payment Ready</h2>
-  <p id="payAmount"></p>
-  <br>
-  <div class="btn" onclick="closeModal()">Close</div>
-</div>
-
-<script>
-let value = "";
-
-/* AUTO SIZE FUNCTION (KEY FIX) */
-function resizeText() {
-  const el = document.getElementById("amount");
-  let length = el.innerText.length;
-
-  let size = 60; // base size
-
-  if (length > 10) size = 45;
-  if (length > 15) size = 35;
-  if (length > 20) size = 25;
-
-  el.style.fontSize = size + "px";
-}
-
-/* UPDATE DISPLAY */
-function updateDisplay() {
-  let display = value || "0";
-  document.getElementById("amount").innerText = "$" + display;
-  resizeText();
-}
-
-/* INPUT */
-function press(num) {
-  if (value.length < 15) {
-    value += num;
-    updateDisplay();
-  }
-}
-
-/* CLEAR */
-function clearAmount() {
-  value = value.slice(0, -1);
-  updateDisplay();
-}
-
-/* REQUEST */
-function requestPay() {
-  alert("Request sent for $" + (value || "0"));
-}
-
-/* PAY */
-function payNow() {
-  document.getElementById("payAmount").innerText = "Amount: $" + (value || "0");
-  document.getElementById("modal").style.display = "block";
-}
-
-/* CLOSE MODAL */
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
-}
-
-updateDisplay();
-</script>
-
-</body>
-</html>
+  <!-- BUTTONS -->
+  <div id="request" class="hit" onclick="requestPay()"></div>
+  <div id="pay" class="hit" onclick="payNow()"></div>
+  <div id="qr" class="hit" onclick="openQR
